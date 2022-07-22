@@ -7,7 +7,7 @@ SRC := $(patsubst ./%, $(OBJECT_DIR)/%.o, $(SOURCE_FILES))
 
 INCLUDES := $(patsubst %, -I%, $(INCLUDES_DIR))
 
-all:  arch/x86/boot.S
+all:  $(PROJECT_NAME)
 
 
 
