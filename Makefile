@@ -7,7 +7,7 @@ SRC := $(patsubst ./%, $(OBJECT_DIR)/%.o, $(SOURCE_FILES))
 
 INCLUDES := $(patsubst %, -I%, $(INCLUDES_DIR))
 
-all:  $(PROJECT_NAME)
+all:  arch/x86/boot.S
 
 
 
@@ -21,16 +21,16 @@ $(TARGET_DIR):
 $(OBJECT_DIR)/%.S.o: %.S
 	@mkdir -p $(@D)
 	@echo " BUILD: $<"
-	@$(CC) $(INCLUDES) $(DEBUG)) $(W)  -MMD -c $< -o $@
+	@$(CC) $(INCLUDES) $(DEBUG) $(W)   -c $< -o $@
 
 
 # 编译所有.c 文件
 $(OBJECT_DIR)/%.c.o: %.c
 	@mkdir -p $(@D)
 	@echo " BUILD: $<"
-	@$(CC) $(INCLUDES) $(DEBUG) $(W) -MMD -c $< -o $@ $(CFLAGS)
+	@$(CC) $(INCLUDES) $(DEBUG) $(W)  -c $< -o $@ $(CFLAGS)
 
-$(PROJECT_NAME) : clear $(SRC) $(TARGET_DIR)
+$(PROJECT_NAME) : clear $(TARGET_DIR) $(SRC)
 	$(CC)  $(DEBUG) $(SRC)  $(W) -o $(TARGET_DIR)/$(PROJECT_NAME)
 	@objcopy --only-keep-debug $(TARGET_DIR)/$(PROJECT_NAME) $(TARGET_DIR)/$(PROJECT_NAME).debug
 # @objcopy --strip-debug $(TARGET_DIR)/$(PROJECT_NAME)
