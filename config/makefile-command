@@ -1,0 +1,11 @@
+## 直接编译为可运行文件
+CC = gcc
+LD = ld
+
+
+## debug
+DEBUG = -g3
+
+## 警告信息
+W := -Wall
+
