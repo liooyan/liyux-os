@@ -47,6 +47,22 @@ void tty_clear() {
 
 }
 
+void tty_scroll_up() {
+    //每行内容等于下一行内容
+    for (int i = 0; i < TTY_HEIGHT - 1; ++i) {
+        for (int j = 0; j < TTY_WIDTH; ++j) {
+            *(TTY_BASH_ADDRESS + j + i * TTY_WIDTH) = *(TTY_BASH_ADDRESS + j + (i + 1) * TTY_WIDTH)
+        }
+    }
+
+    //最后一行清空
+    for (int i = 0; i < TTY_WIDTH; ++i) {
+        *(TTY_BASH_ADDRESS + i + (TTY_HEIGHT - 1) * TTY_WIDTH) = theme_color;
+    }
+
+
+}
+
 
 static void check_width() {
     if (TTY_COLUMN >= TTY_WIDTH) {
