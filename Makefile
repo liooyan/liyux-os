@@ -10,12 +10,16 @@ INCLUDES := $(patsubst %, -I%, $(INCLUDES_DIR))
 all:  $(PROJECT_NAME)
 
 
-
 $(OBJECT_DIR):
 	@mkdir -p $(OBJECT_DIR)
 
 $(TARGET_DIR):
 	@mkdir -p $(TARGET_DIR)
+
+$(GRUB_DIR):
+	@mkdir -p $(GRUB_DIR)
+
+
 
 # 编译所有.S 文件
 $(OBJECT_DIR)/%.S.o: %.S
@@ -28,12 +32,16 @@ $(OBJECT_DIR)/%.S.o: %.S
 $(OBJECT_DIR)/%.c.o: %.c
 	@mkdir -p $(@D)
 	@echo " BUILD: $<"
-	@$(CC) $(INCLUDES) $(DEBUG) $(W)  -c $< -o $@ $(CFLAGS)
+	@$(CC) $(INCLUDES) $(DEBUG) $(W)  -c $< -o $@
 
-$(PROJECT_NAME) : clear $(TARGET_DIR) $(SRC)
-	$(CC)  $(DEBUG) $(SRC)  $(W) -o $(TARGET_DIR)/$(PROJECT_NAME)
-	@objcopy --only-keep-debug $(TARGET_DIR)/$(PROJECT_NAME) $(TARGET_DIR)/$(PROJECT_NAME).debug
-# @objcopy --strip-debug $(TARGET_DIR)/$(PROJECT_NAME)
+$(TARGET_DIR)/$(PROJECT_NAME): $(OBJECT_DIR) $(TARGET_DIR) $(GRUB_DIR) $(SRC)
+	@echo " LINK: $(TARGET_DIR)/$(PROJECT_NAME)"
+	@$(CC) -T link/linker.ld -o $(TARGET_DIR)/$(PROJECT_NAME).bin $(SRC) $(LDFLAGS)
+	@objcopy --only-keep-debug $(TARGET_DIR)/$(PROJECT_NAME).bin $(TARGET_DIR)/$(PROJECT_NAME).debug
+
+
+$(PROJECT_NAME) : clear $(TARGET_DIR)/$(PROJECT_NAME)
+	@./config-grub.sh ${PROJECT_NAME} $(TARGET_DIR) $(GRUB_DIR)/grub.cfg
 
 
 debug_remote : $(PROJECT_NAME)

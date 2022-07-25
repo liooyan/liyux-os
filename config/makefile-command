@@ -9,3 +9,7 @@ DEBUG = -g3
 ## 警告信息
 W := -Wall
 
+
+O := -O2
+LDFLAGS := -ffreestanding $(O) -nostdlib -lgcc
+

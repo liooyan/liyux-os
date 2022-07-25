@@ -2,6 +2,8 @@ PROJECT_NAME = liyux-os
 BUILD_DIR := build
 OBJECT_DIR := ${BUILD_DIR}/obj
 TARGET_DIR := ${BUILD_DIR}/target
+GRUB_DIR := ${BUILD_DIR}/grub
+
 INCLUDES_DIR := includes
 
 DEBUG_REMOTE_PORT = 6666
