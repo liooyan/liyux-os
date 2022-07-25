@@ -1,15 +1,15 @@
 ## 直接编译为可运行文件
-CC = gcc
-LD = ld
+CC := i686-elf-gcc
+AS := i686-elf-as
 
 
 ## debug
 DEBUG = -g3
 
-## 警告信息
-W := -Wall
 
 
+ARCH_OPT := -D__ARCH_IA32
 O := -O2
+W := -Wall -Wextra -Wno-unknown-pragmas
+CFLAGS := -std=gnu99 -ffreestanding $(O) $(W) $(ARCH_OPT)
 LDFLAGS := -ffreestanding $(O) -nostdlib -lgcc
-
