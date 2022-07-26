@@ -9,6 +9,8 @@ INCLUDES := $(patsubst %, -I%, $(INCLUDES_DIR))
 
 all:  $(PROJECT_NAME)
 
+run: bochs_run
+
 ## 所有o文件存放路径
 $(OBJECT_DIR):
 	@mkdir -p $(OBJECT_DIR)
@@ -47,11 +49,18 @@ $(TARGET_DIR)/$(PROJECT_NAME): $(OBJECT_DIR) $(TARGET_DIR) $(ISO_GRUB_DIR) $(SRC
 	@objcopy --only-keep-debug $(TARGET_DIR)/$(PROJECT_NAME).bin $(TARGET_DIR)/$(PROJECT_NAME).debug
 
 # 使用grub打包
-$(PROJECT_NAME) : clear $(TARGET_DIR)/$(PROJECT_NAME)
+$(PROJECT_NAME) :  $(TARGET_DIR)/$(PROJECT_NAME)
 	@./config-grub.sh ${PROJECT_NAME}  $(ISO_GRUB_DIR)/grub.cfg
 	@cp $(TARGET_DIR)/$(PROJECT_NAME).bin $(ISO_BOOT_DIR)
-	@grub-mkrescue -o $(ISO_DIR)/$(PROJECT_NAME).ios $(ISO_DIR)
+	@grub-mkrescue -o $(ISO_DIR)/$(PROJECT_NAME).iso $(ISO_DIR)
 
+
+bochs_debug: clear $(PROJECT_NAME)
+	bochs -q -f ./bochs_debug.cfg
+
+
+bochs_run: clear $(PROJECT_NAME)
+	bochs -q -f ./bochs_run.cfg
 
 clear :
 	@rm -rf $(BUILD_DIR)

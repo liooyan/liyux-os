@@ -33,32 +33,31 @@ SECTIONS {
     __init_hhk_end = ALIGN(4K);
 
     /* Relocation of our higher half kernel */
-    . += 0xC0000000;
 
     /* 好了，我们的内核…… */
-    .text BLOCK(4K) : AT ( ADDR(.text) - 0xC0000000 ) {
+    .text BLOCK(4K) :  {
         __kernel_start = .;
         build/obj/kernel/*.o (.text)
         build/obj/hal/*.o (.text)
     }
 
     __usrtext_start = ALIGN(4K);
-    .usrtext BLOCK(4K) : AT ( ADDR(.usrtext) - 0xC0000000 ) {
+    .usrtext BLOCK(4K) :  {
         build/obj/kernel/*.o (.usrtext)
     }
     __usrtext_end = ALIGN(4K);
 
-    .bss BLOCK(4K) : AT ( ADDR(.bss) - 0xC0000000 ) {
+    .bss BLOCK(4K) :  {
         build/obj/kernel/*.o (.bss)
         build/obj/hal/*.o (.bss)
     }
 
-    .data BLOCK(4k) : AT ( ADDR(.data) - 0xC0000000 ) {
+    .data BLOCK(4k) : {
         build/obj/kernel/*.o (.data)
         build/obj/hal/*.o (.data)
     }
 
-    .rodata BLOCK(4K) : AT ( ADDR(.rodata) - 0xC0000000 ) {
+    .rodata BLOCK(4K) : {
         build/obj/kernel/*.o (.rodata)
         build/obj/hal/*.o (.rodata)
     }

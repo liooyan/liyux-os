@@ -6,16 +6,33 @@
 #include "stdint.h"
 
 //vga 显示的基地址
-vga_attribute *TTY_BASH_ADDRESS = 0xB8000;
+vga_attribute *TTY_BASH_ADDRESS ;
 
-uint32_t TTY_COLUMN = 0;
-uint32_t TTY_ROW = 0;
+uint32_t TTY_COLUMN;
+uint32_t TTY_ROW;
 
 
 //通过一个全局变量，设置显示颜色
 vga_attribute theme_color = VGA_COLOR_BLACK;
 
-void tty_set_theme(tty_uint16_t fg, tty_uint16_t bg) {
+
+
+static void check_width();
+
+
+static void check_height();
+
+void init_tty(){
+    //设置颜色
+    tty_set_theme(VGA_COLOR_WHITE,VGA_COLOR_BLACK);
+    //设置vga显示地址
+    TTY_BASH_ADDRESS =  0xB8000;
+    //清屏
+    tty_clear();
+}
+
+
+void tty_set_theme(vga_attribute fg, vga_attribute bg) {
     theme_color = (bg << 4 | fg) << 8;
 }
 
@@ -51,7 +68,7 @@ void tty_scroll_up() {
     //每行内容等于下一行内容
     for (int i = 0; i < TTY_HEIGHT - 1; ++i) {
         for (int j = 0; j < TTY_WIDTH; ++j) {
-            *(TTY_BASH_ADDRESS + j + i * TTY_WIDTH) = *(TTY_BASH_ADDRESS + j + (i + 1) * TTY_WIDTH)
+            *(TTY_BASH_ADDRESS + j + i * TTY_WIDTH) = *(TTY_BASH_ADDRESS + j + (i + 1) * TTY_WIDTH);
         }
     }
 
@@ -59,10 +76,11 @@ void tty_scroll_up() {
     for (int i = 0; i < TTY_WIDTH; ++i) {
         *(TTY_BASH_ADDRESS + i + (TTY_HEIGHT - 1) * TTY_WIDTH) = theme_color;
     }
+    //行数减少一行
+    TTY_ROW --;
 
 
 }
-
 
 static void check_width() {
     if (TTY_COLUMN >= TTY_WIDTH) {
