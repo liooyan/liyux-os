@@ -1,5 +1,5 @@
 #define __ASM__ 1
-#include <arch/x86/boot/multiboot.h>
+#include <arch/x86/boot/boot.h>
 
 #define MB_FLAGS    MULTIBOOT_MEMORY_INFO | MULTIBOOT_PAGE_ALIGN
 #define KPG_SIZE    10*4096
@@ -28,5 +28,7 @@
     .global _start
     _start:
         movl $stack_top, %esp
-        call _init_main
+        subl $8, %esp
+        movl %ebx, (%esp)
+        call _init_multiboot_info
         ret

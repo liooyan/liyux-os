@@ -8,9 +8,11 @@
 //vga 显示的基地址
 vga_attribute *TTY_BASH_ADDRESS ;
 
-uint32_t TTY_COLUMN;
-uint32_t TTY_ROW;
+int TTY_COLUMN;
+int TTY_ROW;
 
+int TTY_WIDTH ;
+int TTY_HEIGHT ;
 
 //通过一个全局变量，设置显示颜色
 vga_attribute theme_color = VGA_COLOR_BLACK;
@@ -22,7 +24,9 @@ static void check_width();
 
 static void check_height();
 
-void init_tty(){
+void init_tty(int width,int height){
+    TTY_WIDTH = width;
+    TTY_HEIGHT = height;
     //设置颜色
     tty_set_theme(VGA_COLOR_WHITE,VGA_COLOR_BLACK);
     //设置vga显示地址

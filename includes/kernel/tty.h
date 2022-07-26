@@ -26,11 +26,9 @@ typedef unsigned short vga_attribute;
 #define VGA_COLOR_LIGHT_BROWN 14
 #define VGA_COLOR_WHITE 15
 
-#define TTY_WIDTH 80
-#define TTY_HEIGHT 25
 
 
-void init_tty();
+void init_tty(int width,int  height);
 void tty_set_theme(vga_attribute fg, vga_attribute bg);
 
 void tty_put_chr(char chr);
