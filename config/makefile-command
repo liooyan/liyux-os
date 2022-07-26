@@ -1,6 +1,21 @@
 ## 直接编译为可运行文件
-CC := i686-elf-gcc
-AS := i686-elf-as
+# windows 环境下的变量
+ifeq ($(OS),Windows_NT)
+
+  CC := gcc
+  AS := as
+  MKDIR_END = #
+
+else
+
+# Linux 环境下的变量
+ ifeq ($(shell uname),Linux)
+
+  CC := i686-elf-gcc
+  AS := i686-elf-as
+
+ endif
+endif
 
 
 ## debug
