@@ -102,4 +102,7 @@ struct multiboot_info {
 typedef struct multiboot_info multiboot_info_t;
 
 
+
+multiboot_info_t* multiboot_info;
+
 #endif

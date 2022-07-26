@@ -42,8 +42,14 @@ void tty_set_theme(vga_attribute fg, vga_attribute bg) {
 
 
 void tty_put_chr(char chr) {
-    *(TTY_BASH_ADDRESS + TTY_COLUMN + TTY_ROW * TTY_WIDTH) = (theme_color | chr);
-    TTY_COLUMN++;
+    //换行
+    if(chr == '\n'){
+        TTY_ROW++;
+        TTY_COLUMN = 0;
+    } else{
+        *(TTY_BASH_ADDRESS + TTY_COLUMN + TTY_ROW * TTY_WIDTH) = (theme_color | chr);
+        TTY_COLUMN++;
+    }
     check_width();
     check_height();
 

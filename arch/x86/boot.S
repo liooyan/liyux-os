@@ -27,8 +27,39 @@
 .section .text
     .global _start
     _start:
+    /*关闭中断*/
+        cli
+
         movl $stack_top, %esp
-        subl $8, %esp
-        movl %ebx, (%esp)
-        call _init_multiboot_info
-        ret
+        movl %ebx,multiboot_info
+        call _mem_init
+    _after_mem_init:
+         call _init_multiboot_info
+
+        ._start_loop:
+            jmp ._start_loop
+
+
+    ##初始化内存
+    _mem_init :
+
+        call _init_gdt
+        subl $6, %esp
+        movl $_gdt,2(%esp)
+        movw _gdt_limit,%ax
+        movw %ax,(%esp)
+        lgdt (%esp)
+        addl $6, %esp
+        /* 更新段寄存器 */
+        movw $BOOT_GDT_DATA, %cx
+        movw %cx, %es
+        movw %cx, %ds
+        movw %cx, %fs
+        movw %cx, %gs
+        movw %cx, %ss
+
+        /* 更新 CS:EIP */
+        subl $6, %esp
+        movw $BOOT_GDT_CODE,4(%esp)
+        movl $_after_mem_init,(%esp)
+        retf

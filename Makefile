@@ -8,7 +8,7 @@ SRC := $(patsubst ./%, $(OBJECT_DIR)/%.o, $(SOURCE_FILES))
 INCLUDES := $(patsubst %, -I%, $(INCLUDES_DIR))
 
 
-linux :$(PROJECT_NAME)
+linux :clear $(PROJECT_NAME)
 
 all: clear  $(TARGET_DIR)/$(PROJECT_NAME)
 

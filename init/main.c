@@ -3,11 +3,12 @@
 //
 
 #include "kernel/tty.h"
+#include <arch/x86/gdt.h>
 #include "arch/x86/boot/multiboot.h"
 
-void _init_multiboot_info(multiboot_info_t* info){
-    init_tty(info->framebuffer_width,info->framebuffer_height);
+void _init_multiboot_info(){
+    init_tty(multiboot_info->framebuffer_width,multiboot_info->framebuffer_height);
     for (int i = 0; i < 10000; ++i) {
-        tty_put_str("test");
+        tty_put_str("test\n");
     }
 }
