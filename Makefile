@@ -65,7 +65,7 @@ bochs_debug: clear $(PROJECT_NAME)
 bochs_run: clear $(PROJECT_NAME)
 	bochs -q -f ./bochs_run.cfg
 
-clear :
+clean :
 	@rm -rf $(BUILD_DIR) #
 
 qemu :

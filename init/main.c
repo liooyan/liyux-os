@@ -3,7 +3,6 @@
 //
 
 #include "kernel/tty.h"
-#include <arch/x86/gdt.h>
 #include "arch/x86/boot/multiboot.h"
 
 void _init_multiboot_info(){
