@@ -4,7 +4,6 @@ ifeq ($(OS),Windows_NT)
 
   CC := gcc
   AS := as
-  MKDIR_END = #
 
 else
 

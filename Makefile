@@ -13,31 +13,31 @@ run: bochs_run
 
 ## 所有o文件存放路径
 $(OBJECT_DIR):
-	@mkdir -p $(OBJECT_DIR) $(MKDIR_END)
+	@mkdir -p $(OBJECT_DIR) #
 
 
 ## 所有 link后文件存放路径
 $(TARGET_DIR):
-	@mkdir  -p $(TARGET_DIR) $(MKDIR_END)
+	@mkdir  -p $(TARGET_DIR) #
 
 
 
 
 $(ISO_GRUB_DIR):
-	@mkdir -p $(ISO_GRUB_DIR) $(MKDIR_END)
+	@mkdir -p $(ISO_GRUB_DIR) #
 
 
 
 # 编译所有.S 文件
 $(OBJECT_DIR)/%.S.o: %.S
-	@mkdir -p $(@D) $(MKDIR_END)
+	@mkdir -p $(@D) #
 	@echo " BUILD: $<"
 	$(CC) $(INCLUDES) $(DEBUG)    -c $< -o $@
 
 
 # 编译所有.c 文件
 $(OBJECT_DIR)/%.c.o: %.c
-	@mkdir -p $(@D) $(MKDIR_END)
+	@mkdir -p $(@D) #
 	@echo " BUILD: $<"
 	$(CC) $(INCLUDES) $(DEBUG)   -c $< -o $@ $(CFLAGS)
 
@@ -63,7 +63,7 @@ bochs_run: clear $(PROJECT_NAME)
 	bochs -q -f ./bochs_run.cfg
 
 clear :
-	-@rm -rf $(BUILD_DIR)
+	@rm -rf $(BUILD_DIR) #
 
 
 
