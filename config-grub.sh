@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 export _OS_NAME=$1
 

@@ -28,7 +28,7 @@ typedef unsigned short vga_attribute;
 
 
 
-void init_tty(int width,int  height);
+void _init_tty(int width,int  height);
 void tty_set_theme(vga_attribute fg, vga_attribute bg);
 
 void tty_put_chr(char chr);

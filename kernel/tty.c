@@ -24,7 +24,7 @@ static void check_width();
 
 static void check_height();
 
-void init_tty(int width,int height){
+void _init_tty(int width,int height){
     TTY_WIDTH = width;
     TTY_HEIGHT = height;
     //设置颜色

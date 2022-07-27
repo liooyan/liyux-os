@@ -8,9 +8,9 @@ SRC := $(patsubst ./%, $(OBJECT_DIR)/%.o, $(SOURCE_FILES))
 INCLUDES := $(patsubst %, -I%, $(INCLUDES_DIR))
 
 
-linux :clear $(PROJECT_NAME)
+linux : clean $(PROJECT_NAME)
 
-all: clear  $(TARGET_DIR)/$(PROJECT_NAME)
+all:   $(TARGET_DIR)/$(PROJECT_NAME)
 
 run: bochs_run
 
@@ -58,11 +58,11 @@ $(PROJECT_NAME) :  $(TARGET_DIR)/$(PROJECT_NAME)
 	@grub-mkrescue -o $(ISO_DIR)/$(PROJECT_NAME).iso $(ISO_DIR)
 
 
-bochs_debug: clear $(PROJECT_NAME)
-	bochs -q -f ./bochs_debug.cfg
+bochs_debug:
+	@bochsdbg -q -f ./bochs_debug.cfg
 
 
-bochs_run: clear $(PROJECT_NAME)
+bochs_run:  $(PROJECT_NAME)
 	bochs -q -f ./bochs_run.cfg
 
 clean :

@@ -32,34 +32,12 @@
 
         movl $stack_top, %esp
         movl %ebx,multiboot_info
-        call _mem_init
-    _after_mem_init:
-         call _init_multiboot_info
+        call _hhk_init # 初始化内核
 
+        pushl $0
+        pushl $1
+
+        call _kernel_init
         ._start_loop:
             jmp ._start_loop
 
-
-    ##初始化内存
-    _mem_init :
-
-        call _init_gdt
-        subl $6, %esp
-        movl $_gdt,2(%esp)
-        movw _gdt_limit,%ax
-        movw %ax,(%esp)
-        lgdt (%esp)
-        addl $6, %esp
-        /* 更新段寄存器 */
-        movw $BOOT_GDT_DATA, %cx
-        movw %cx, %es
-        movw %cx, %ds
-        movw %cx, %fs
-        movw %cx, %gs
-        movw %cx, %ss
-
-        /* 更新 CS:EIP */
-        subl $6, %esp
-        movw $BOOT_GDT_CODE,4(%esp)
-        movl $_after_mem_init,(%esp)
-        retf
