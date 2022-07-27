@@ -59,7 +59,7 @@ $(PROJECT_NAME) :  $(TARGET_DIR)/$(PROJECT_NAME)
 
 
 bochs_debug:
-	@bochsdbg -q -f ./bochs_debug.cfg
+	@bochsdbg -q -f ./bochs_run.cfg
 
 
 bochs_run: clear $(PROJECT_NAME)
