@@ -25,4 +25,7 @@
     pushl %ebx
     movl $_idt_function,%ebx
     call *(%ebx,%eax,4)
+    popl %ebx
+    popl %eax
+    addl $8,%esp
     iret
