@@ -10,7 +10,7 @@ INCLUDES := $(patsubst %, -I%, $(INCLUDES_DIR))
 
 linux : clean $(PROJECT_NAME)
 
-all: clear  $(TARGET_DIR)/$(PROJECT_NAME)
+all: clean  $(TARGET_DIR)/$(PROJECT_NAME)
 
 run: bochs_run
 
@@ -61,11 +61,13 @@ $(PROJECT_NAME) :  $(TARGET_DIR)/$(PROJECT_NAME)
 
 
 
-bochs_debug:
-	@bochsdbg -q -f ./bochs_run.cfg
+bochs_debug: clean $(PROJECT_NAME)
+	@bochs -q -f ./bochs_debug.cfg
 
+bochs_gdb: clean $(PROJECT_NAME)
+	@bochs-gdb -q -f ./bochs_gdb.cfg
 
-bochs_run: clear $(PROJECT_NAME)
+bochs_run: clean $(PROJECT_NAME)
 	bochs -q -f ./bochs_run.cfg
 
 clean :
