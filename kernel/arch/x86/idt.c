@@ -5,7 +5,7 @@
 #include <kernel/interrupt.h>
 #include <arch/x86/idt.h>
 #include <arch/x86/gdt.h>
-
+#include <arch/x86/rlevel.h>
 #define IDT_ENTRY 256
 
 

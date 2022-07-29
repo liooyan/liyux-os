@@ -5,7 +5,8 @@
     .global _hhk_init
     _hhk_init:
         call _set_gdt
-        call  _set_idt
+        call _set_mem_page
+        call _set_idt
         ret
 
 
@@ -31,7 +32,7 @@
         movw %cx, %ss
 
         /* 更新 CS:EIP */
-        subl $8, %esp
+        subl $BOOT_GDT_CODE, %esp
         movw $BOOT_GDT_CODE,4(%esp)
         movl $_after_set_gdt,(%esp)
         retf
@@ -48,6 +49,13 @@
         movw %ax, (%esp)
         lidt (%esp)
 
-
         addl $6, %esp
+        ret
+
+    _set_mem_page:
+
+        pushl $_k_ptd
+
+        call _inti_page
+        addl $4, %esp
         ret

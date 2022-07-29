@@ -77,9 +77,6 @@
 #define GDT_SELECTOR_DATA_GLOBAL 0x10
 
 
-#define R0  0
-
-
 void _init_gdt();
 
 #endif //LIYUX_OS_GDT_H

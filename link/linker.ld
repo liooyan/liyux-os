@@ -14,6 +14,7 @@ SECTIONS {
     /* 这里是我们的高半核初始化代码段和数据段 */
 
     .hhk_init_text BLOCK(4K) : {
+          __kernel_start = .;
         * (.multiboot)
         build/obj/arch/x86/*.o (.hhk_init)
         build/obj/arch/x86/*.o (.text)
@@ -62,7 +63,9 @@ SECTIONS {
         build/obj/hal/*.o (.rodata)
     }
 
-
+    .kpg BLOCK(4K) :{
+        build/obj/arch/x86/*.o (.kpg)
+    }
 
     __kernel_end = ALIGN(4K);
 }
