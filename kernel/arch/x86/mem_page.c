@@ -101,7 +101,7 @@ void _inti_page(uint32_t *kpg) {
 
         //映射具体的物理地址
         for (int j = 0; j < PAGE_SIZE; ++j) {
-            init_page_addr(page_table, (kernel_start_page_directory << 10) + (i * 0x3ff)+j);
+            init_page_addr(page_table, ((kernel_start_page_directory+i) << 10) +j);
 
         }
 
