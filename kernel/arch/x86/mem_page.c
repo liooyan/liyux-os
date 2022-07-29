@@ -47,8 +47,8 @@ static void set_page_rw_r3(uint32_t *mapping_addr, uint32_t physical_addr) {
 static void init_page_directory(uint32_t *page_directory_addr) {
     //先全部清零
     init_page_zero(page_directory_addr);
-    //将自己安装在最后一个页中
-    set_page_rw_r0((page_directory_addr + PAGE_SIZE - 1), page_directory_addr);
+//    //将自己安装在最后一个页中
+//    set_page_rw_r0((page_directory_addr + PAGE_SIZE - 1), page_directory_addr);
 
 }
 
@@ -65,10 +65,10 @@ static void init_page_table(uint32_t *page_directory_addr, uint32_t *page_table_
 
     //将页表安装在页目录里
     set_page_rw_r0((page_directory_addr + index), page_table_addr);
-    //将自己安装在最后一页
-    set_page_rw_r0((page_table_addr + PAGE_SIZE - 1), page_table_addr);
-    //将页目录安装在对应的页表里
-    set_page_rw_r0((page_table_addr + index), page_directory_addr);
+//    //将自己安装在最后一页
+//    set_page_rw_r0((page_table_addr + PAGE_SIZE - 1), page_table_addr);
+//    //将页目录安装在对应的页表里
+//    set_page_rw_r0((page_table_addr + index), page_directory_addr);
 }
 
 /**
@@ -81,7 +81,7 @@ static void init_page_addr(uint32_t *page_table_addr, uint32_t physical_addr) {
 
     uint32_t index = 0x3ff | physical_addr;
 
-    set_page_rw_r0((page_table_addr + index), page_table_addr);
+    set_page_rw_r0((page_table_addr + index), physical_addr);
 }
 
 
