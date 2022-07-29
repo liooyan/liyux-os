@@ -29,6 +29,7 @@ typedef unsigned short vga_attribute;
 
 
 void _init_tty(int width,int  height);
+void _init_tty_bash_address(vga_attribute *addr);
 void tty_set_theme(vga_attribute fg, vga_attribute bg);
 
 void tty_put_chr(char chr);
