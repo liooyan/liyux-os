@@ -17,8 +17,7 @@
 
 .section .text
     isr_template FAULT_DIVISION_ERROR
-    isr_template FAULT_DIVISION_ERROR61
-    isr_template FAULT_DIVISION_ERROR60
+    isr_template TRIGGER_KEYWORD_EVENT
 
 
     interrupt_wrapper:

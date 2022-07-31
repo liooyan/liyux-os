@@ -2,6 +2,8 @@
 // Created by root on 22-7-30.
 //
 
+#include <stdint.h>
+
 #ifndef LIYUX_OS_PIC_H
 #define LIYUX_OS_PIC_H
 
@@ -26,8 +28,11 @@
 #define ICW4_BUF_MASTER	0x0C		/* Buffered mode/master */
 #define ICW4_SFNM	0x10		/* Special fully nested (not) */
 
-
+#define KEYWORD_EVENT_INDEX 1
 
 void _init_pic(int offset1, int offset2);
-#define sti() __asm__ ("sti"::)
+
+
+void pic_send_end(uint8_t irq);
+
 #endif //LIYUX_OS_PIC_H

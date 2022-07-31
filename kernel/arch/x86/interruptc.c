@@ -1,14 +1,19 @@
 #include <kernel/interrupt.h>
+
 #include "kernel/tty.h"
+#include "arch/x86/pic.h"
+#include "arch/x86/cpu.h"
+
+
 
 void isr0() {
     tty_put_str("div 0\n");
 }
 
-void isr61() {
-    tty_put_str("isr61\n");
+void keyword_event() {
+    tty_put_str("isr81\n");
+    uint8_t  a = inb(0x60);
+    tty_put_str(a);
+    pic_send_end(KEYWORD_EVENT_INDEX);
 }
 
-void isr60() {
-    tty_put_str("isr60\n");
-}

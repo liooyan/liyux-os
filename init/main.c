@@ -11,7 +11,7 @@
 void _kernel_init() {
     _init_tty(multiboot_info->framebuffer_width, multiboot_info->framebuffer_height);
     _init_idt();
-    _init_pic(60,68);
+    _init_pic(80,88);
     sti();
     tty_put_str("test\n");
 }

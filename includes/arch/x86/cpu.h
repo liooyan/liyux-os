@@ -68,4 +68,6 @@ static inline void io_wait(void)
 {
     outb(0x80, 0);
 }
+
+#define sti() __asm__ ("sti"::)
 #endif //LIYUX_OS_CPU_H
