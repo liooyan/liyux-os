@@ -58,17 +58,19 @@ $(PROJECT_NAME) :  $(TARGET_DIR)/$(PROJECT_NAME)
 	@grub-mkrescue -o $(ISO_DIR)/$(PROJECT_NAME).iso $(ISO_DIR)
 
 
+win-bochs_debug:
+	@bochsdbg -q -f ./bochs/bochs_run.cfg
 
 
 
 bochs_debug: clean $(PROJECT_NAME)
-	@bochs -q -f ./bochs_debug.cfg
+	@bochs -q -f ./bochs/bochs_debug.cfg
 
 bochs_gdb: clean $(PROJECT_NAME)
-	@bochs-gdb -q -f ./bochs_gdb.cfg
+	@bochs-gdb -q -f ./bochs/bochs_gdb.cfg
 
 bochs_run: clean $(PROJECT_NAME)
-	bochs -q -f ./bochs_run.cfg
+	bochs -q -f ./bochs/bochs_run.cfg
 
 clean :
 	@rm -rf $(BUILD_DIR) #

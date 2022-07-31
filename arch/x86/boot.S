@@ -2,6 +2,7 @@
 #include <arch/x86/boot/boot.h>
 
 #define MB_FLAGS    MULTIBOOT_MEMORY_INFO | MULTIBOOT_PAGE_ALIGN
+
 #define KPG_SIZE    10*4096
 
 .section .multiboot
@@ -9,12 +10,14 @@
     .long MB_FLAGS
     .long CHECKSUM(MB_FLAGS)
 
+.section .kpg
+    .global _k_ptd
+    _k_ptd:
+        .skip KPG_SIZE, 0
+
 .section .bss
     .global mb_info
     .align 16
-    /* 为Multiboot info struct 预留空间 */
-    mb_info:
-        .skip 4096
     /* 根据System V ABI，栈地址必须16字节对齐 */
     /* 这里只是一个临时栈，在_hhk_init里面我们会初始化内核专用栈 */
     stack_bottom:
@@ -34,8 +37,6 @@
         movl %ebx,multiboot_info
         call _hhk_init # 初始化内核
 
-        pushl $0
-        pushl $1
 
         call _kernel_init
         ._start_loop:

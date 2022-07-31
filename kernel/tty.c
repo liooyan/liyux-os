@@ -18,19 +18,21 @@ int TTY_HEIGHT ;
 vga_attribute theme_color = VGA_COLOR_BLACK;
 
 
-
 static void check_width();
 
 
 static void check_height();
 
+
+void _init_tty_bash_address(vga_attribute *addr){
+    //设置vga显示地址
+    TTY_BASH_ADDRESS =addr;
+}
 void _init_tty(int width,int height){
     TTY_WIDTH = width;
     TTY_HEIGHT = height;
     //设置颜色
     tty_set_theme(VGA_COLOR_WHITE,VGA_COLOR_BLACK);
-    //设置vga显示地址
-    TTY_BASH_ADDRESS = (vga_attribute *) 0xB8000;
     //清屏
     tty_clear();
 }
