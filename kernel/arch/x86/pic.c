@@ -4,6 +4,10 @@
 #include "arch/x86/pic.h"
 #include "arch/x86/cpu.h"
 #include "stdint.h"
+
+#define HZ 100
+#define LATCH (1193180/HZ)
+
 /**
  * 发送pic处理完成指令
  * @param irq
@@ -31,8 +35,13 @@ void _init_pic(int offset1, int offset2){
     outb(PIC1_DATA, ICW4_8086);
     outb(PIC2_DATA, ICW4_8086);
 
-    outb(PIC1_DATA, 0xfd);   // restore saved masks.
+    outb(PIC1_DATA, 0xfc);   // restore saved masks.
     outb(PIC2_DATA, 0xff);
+
+
+    outb(0x43,0x36);		/* binary, mode 3, LSB/MSB, ch 0 */
+    outb(0x40,LATCH & 0xff );	/* LSB */
+    outb(0x40,LATCH >> 8 );	/* MSB */
 
 }
 

@@ -45,6 +45,7 @@ static void set_idt_dlp0_global(uint32_t vector, void (*isr)(),void (*function)(
 
 void _init_idt() {
     set_idt_dlp0_global(FAULT_DIVISION_ERROR, _asm_isr0,isr0);
+    set_idt_dlp0_global(TRIGGER_TIMER_EVENT, _asm_isr80,timer_event);
     set_idt_dlp0_global(TRIGGER_KEYWORD_EVENT, _asm_isr81,keyword_event);
 
     idt_index_t index = {_idt_limit,_idt};

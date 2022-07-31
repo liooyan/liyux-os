@@ -2,10 +2,12 @@
 // Created by root on 22-7-30.
 //
 
-#include <stdint.h>
+
 
 #ifndef LIYUX_OS_PIC_H
 #define LIYUX_OS_PIC_H
+#include <stdint.h>
+
 
 #define PIC1		0x20		//主pic端口
 #define PIC2		0xA0		//从pic端口

@@ -7,6 +7,7 @@
 
 #define FAULT_DIVISION_ERROR   0
 
+#define TRIGGER_TIMER_EVENT  80
 #define TRIGGER_KEYWORD_EVENT  81
 
 
