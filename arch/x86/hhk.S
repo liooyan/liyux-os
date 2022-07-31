@@ -6,7 +6,6 @@
     _hhk_init:
         call _set_gdt
         call _set_mem_page
-        call _init_idt
         ret
 
 
@@ -39,18 +38,6 @@
     _after_set_gdt:
         ret
 
-
-    _set_idt:
-        subl $6, %esp
-        call _init_idt
-        # 加载 IDT
-        movl $_idt, 2(%esp)
-        movw _idt_limit, %ax
-        movw %ax, (%esp)
-        lidt (%esp)
-
-        addl $6, %esp
-        ret
 
     _set_mem_page:
 

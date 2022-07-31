@@ -39,6 +39,7 @@
 
 
         call _kernel_init
-        ._start_loop:
-            jmp ._start_loop
+    1:
+        hlt
+            jmp 1b
 

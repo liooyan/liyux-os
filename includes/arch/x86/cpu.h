@@ -4,41 +4,41 @@
 
 #ifndef LIYUX_OS_CPU_H
 #define LIYUX_OS_CPU_H
-typedef unsigned int reg32;
+#include "stdint.h"
 
-static inline reg32 cpu_rcr0()
+static inline uint32_t cpu_rcr0()
 {
-    uintptr_t val;
+    uint32_t val;
     asm volatile("movl %%cr0,%0" : "=r"(val));
     return val;
 }
 
-static inline reg32 cpu_rcr2()
+static inline uint32_t cpu_rcr2()
 {
-    uintptr_t val;
+    uint32_t val;
     asm volatile("movl %%cr2,%0" : "=r"(val));
     return val;
 }
 
-static inline reg32 cpu_rcr3()
+static inline uint32_t cpu_rcr3()
 {
-    uintptr_t val;
+    uint32_t val;
     asm volatile("movl %%cr3,%0" : "=r"(val));
     return val;
 }
 
 
-static inline void cpu_lcr0(reg32 v)
+static inline void cpu_lcr0(uint32_t v)
 {
     asm("mov %0, %%cr0" ::"r"(v));
 }
 
-static inline void cpu_lcr2(reg32 v)
+static inline void cpu_lcr2(uint32_t v)
 {
     asm("mov %0, %%cr2" ::"r"(v));
 }
 
-static inline void cpu_lcr3(reg32 v)
+static inline void cpu_lcr3(uint32_t v)
 {
     asm("mov %0, %%cr3" ::"r"(v));
 }
@@ -50,4 +50,22 @@ inline void cpu_lidt(uint32_t *index)
 }
 
 
+
+static inline uint8_t inb(uint16_t port)
+{
+    uint8_t ret;
+    asm volatile ( "inb %1, %0"
+            : "=a"(ret)
+            : "Nd"(port) );
+    return ret;
+}
+
+static inline void outb(uint16_t port, uint8_t val)
+{
+    asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );
+}
+static inline void io_wait(void)
+{
+    outb(0x80, 0);
+}
 #endif //LIYUX_OS_CPU_H
