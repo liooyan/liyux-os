@@ -25,22 +25,14 @@ static void init_idt_descriptor(idt_descriptor_t *idt, uint16_t selector,uint32_
     idt->attr = (1 << 7) | ((dpl & 3) << 5) | (1 << 3) | (3 << 1);
 }
 
-static void set_idt_entry(uint32_t vector,
-                          uint16_t seg_selector,
-                          void (*isr)(),
-                          void (*function)(),
-                          uint8_t dpl) {
-    init_idt_descriptor(&_idt[vector],seg_selector,isr,R0);
-    _idt_function[vector]  = function;
-}
-
 /**
  * 安装idt， selector使用0x08，特权等级为0
  * @param vector
  * @param isr
  */
 static void set_idt_dlp0_global(uint32_t vector, void (*isr)(),void (*function)()) {
-    set_idt_entry(vector, GDT_SELECTOR_CODE_GLOBAL, isr, function,R0);
+    init_idt_descriptor(&_idt[vector],GDT_SELECTOR_CODE_GLOBAL,isr,R0);
+    _idt_function[vector]  = function;
 }
 
 void _init_idt() {
