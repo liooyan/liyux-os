@@ -12,10 +12,12 @@
 #define ISR(iv) void _asm_isr##iv();
 
 ISR(0)
-
+ISR(80)
+ISR(81)
 
 
 void isr0();
-
+void timer_event();
+void keyword_event();
 
 #endif //LIYUX_OS_INTERRUPT_H

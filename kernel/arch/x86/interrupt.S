@@ -17,7 +17,8 @@
 
 .section .text
     isr_template FAULT_DIVISION_ERROR
-
+    isr_template TRIGGER_KEYWORD_EVENT
+    isr_template TRIGGER_TIMER_EVENT
 
     interrupt_wrapper:
     pushl %eax

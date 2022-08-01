@@ -19,7 +19,12 @@
 
 #define MEM_PAGE_ATTR(RW, MP_US, P) P | RW << 1 | MP_US << 2
 
-#define MEM_PAGE(ADD,RW, MP_US, P)  (ADD & 0xfffff000) | MEM_PAGE_ATTR(RW, MP_US, P)
+#define MEM_GET_PAGE_ADDR(ADD) (ADD & 0xfffff000)
+
+#define MEM_PAGE(ADD,RW, MP_US, P) MEM_GET_PAGE_ADDR(ADD) | MEM_PAGE_ATTR(RW, MP_US, P)
+
+
+
 
 //读写权限
 #define MP_RW_R 0
