@@ -8,7 +8,7 @@
 #include "arch/x86/cpu.h"
 #include "arch/x86/idt.h"
 #include "arch/x86/pci.h"
-
+#include "arch/x86/ahci.h"
 void _kernel_init() {
     _init_tty(multiboot_info->framebuffer_width, multiboot_info->framebuffer_height);
     _init_idt();
@@ -17,5 +17,7 @@ void _kernel_init() {
      _pci_probe();
 
     sti();
-    tty_put_str("test\n");
+
+    pci_device_t *ahci_head = select_pci_by_class(AHCI_CLASS);
+    tty_put_str(ahci_head);
 }

@@ -20,4 +20,5 @@ typedef struct pci_device
 } pci_device_t;
 
 void _pci_probe();
+pci_device_t *select_pci_by_class(uint32_t class);
 #endif //LIYUX_OS_PCI_H

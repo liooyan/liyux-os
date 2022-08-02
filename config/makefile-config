@@ -14,3 +14,17 @@ INCLUDES_DIR := includes
 
 
 
+QEMU_MON_PORT := 45454
+
+## qemu-img convert -O vdi /data/source.vhdx /data/output.vdi
+
+
+QEMU_OPTIONS := -rtc base=utc \
+				-no-reboot \
+				-machine q35 \
+				-no-shutdown \
+				-d cpu_reset \
+				-d trace:ide_dma_cb \
+				-drive id=disk,file="/root/work/liyan.vhi",if=none \
+				-device ahci,id=ahci \
+				-device ide-hd,drive=disk,bus=ahci.0

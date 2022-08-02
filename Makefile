@@ -75,8 +75,8 @@ bochs_run: clean $(PROJECT_NAME)
 clean :
 	@rm -rf $(BUILD_DIR) #
 
-qemu :
-	@qemu-system-i386 -cdrom build\iso\liyux-os.iso -S -s
+qemu : clean $(PROJECT_NAME)
+	@qemu-system-i386 -cdrom build/iso/liyux-os.iso  -S -s $(QEMU_OPTIONS)
 
 
 

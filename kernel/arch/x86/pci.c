@@ -59,12 +59,25 @@ static void pic_probe_device(uint8_t bus, uint8_t dev, uint8_t func) {
     uint32_t intr = pic_config_read(bus, dev, func, 0x3c);
     uint32_t class = pic_config_read(bus, dev, func,  0x8);
     pci_device_t pci = {
-            .class_info =class ,
+            .class_info =class  ,
             .device_info=reg1 >> 16,
             .vendor_info = reg1 & 0xffff,
             .irq = intr & 0xff
     };
     installation_pci(&pci);
+
+}
+
+pci_device_t *select_pci_by_class(uint32_t class){
+    for (int i = 0; i < 256; ++i) {
+        if(pci_device[i].device_info == 0 ){
+            return &pci_device[i];
+        }
+        if((pci_device[i].class_info >>8 == class)){
+            return &pci_device[i];
+        }
+    }
+    return &pci_device[255];
 
 }
 
