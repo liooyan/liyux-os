@@ -57,7 +57,7 @@ void _init_gdt() {
         uint32_t base_addr = GET_BASE(gdtDescriptor->addr_base_h, gdtDescriptor->addr_base_m,
                                       gdtDescriptor->addr_base_l);
 
-        uint32_t limit = ((gdtDescriptor->attr_addr_limit_h & 0xff) << 8) | gdtDescriptor->addr_limit_l;
+        uint32_t limit = ((gdtDescriptor->attr_addr_limit_h & 0xff) << 16) | gdtDescriptor->addr_limit_l;
         //判断G
         if ((gdtDescriptor->attr_addr_limit_h & (1 << 7)) != 0) {
             limit = (limit << 12) | 0xfff;

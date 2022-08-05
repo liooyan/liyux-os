@@ -36,7 +36,7 @@ typedef struct {
 
 void format_init(const char *format,format_info_t *format_info);
 
-size_t format(int64_t src, char *results, const format_info_t *format_info);
+size_t format(uint64_t src, char *results, const format_info_t *format_info);
 
 
 

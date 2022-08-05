@@ -11,14 +11,14 @@ void isr0() {
 }
 
 void keyword_event() {
-    tty_put_str("isr81\n");
+ //   tty_put_str("isr81\n");
     uint8_t  a = inb(0x60);
-    tty_put_str(a);
+//    tty_put_str(a);
     pic_send_end(KEYWORD_EVENT_INDEX);
 }
 
 void timer_event(){
     static int i = 0;
-    tty_put_str("timer event\n");
+ //   tty_put_str("timer event\n");
     pic_send_end(KEYWORD_EVENT_INDEX);
 }

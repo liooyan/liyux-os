@@ -41,17 +41,18 @@ void format_init(const char *format, format_info_t *format_info) {
 }
 
 
-size_t format(int64_t src, char *results, const format_info_t *format_info) {
+size_t format(uint64_t src_r, char *results, const format_info_t *format_info) {
     //有正负之分的格式
     if (format_info->specifier == FORMAT_INT_BASE_10) {
         //判断正负
-        if ((src & (((uint64_t) 1) << 63)) != 0) {
+        if ((src_r & (((uint64_t) 1) << 63)) != 0) {
             *results = '-';
             results++;
             //对负数取反
-            src = ~src+1;
+            src_r = ~src_r+1;
         }
     }
+    uint64_t  src = (uint64_t)src_r;
     //如果是0 直接返回
     if (src == 0 && format_info->width == 0) {
         results[0] = ascii_int_index[0];

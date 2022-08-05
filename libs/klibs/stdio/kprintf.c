@@ -34,10 +34,10 @@ void kprintf(const char *str, ...) {
             } else {
                 char value[format_info.size];
                 if (format_info.length != 2) {
-                    int32_t src = va_arg(args, int32_t);
+                    uint32_t src = va_arg(args, uint32_t);
                     format(src, value, &format_info);
                 } else {
-                    int64_t src = va_arg(args, int64_t);
+                    uint64_t src = va_arg(args, uint64_t);
                     format(src, value, &format_info);
                 }
                 int i = 0;
