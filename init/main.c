@@ -9,12 +9,14 @@
 #include "arch/x86/idt.h"
 #include "arch/x86/pci.h"
 #include "arch/x86/ahci.h"
-#include "klib/stdio.h"
+#include "arch/x86/gdt.h"
 
+extern  gdt_descriptor_t *_gdt;
 void _kernel_init() {
     _init_tty(multiboot_info->framebuffer_width, multiboot_info->framebuffer_height);
-    long long  qq = 41234543121234;
-    kprintf("李延是 %llu",qq);
+    for (int i = 0; i < 6; ++i) {
+        gdt_print(i);
+    }
     _init_idt();
     _init_pic(80, 88);
     _pci_probe();

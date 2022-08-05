@@ -53,9 +53,10 @@ size_t format(int64_t src, char *results, const format_info_t *format_info) {
         }
     }
     //如果是0 直接返回
-    if (src == 0) {
+    if (src == 0 && format_info->width == 0) {
         results[0] = ascii_int_index[0];
         results[1] = '\0';
+        return 1;
     }
     int into = 10;
     if(format_info->specifier ==FORMAT_INT_BASE_10 || format_info->specifier ==FORMAT_UINT_BASE_10 ){
@@ -66,15 +67,22 @@ size_t format(int64_t src, char *results, const format_info_t *format_info) {
         into = 16;
     }
 
-    int str_index;
+    uint32_t str_index;
     for (str_index = 0; src > 0; str_index++) {
         int index = src % into;
         results[str_index] = ascii_int_index[index];
         src /= into;
     }
 
+    //前置位补0;
+    if(format_info->width > str_index){
+        for (; str_index < format_info->width; str_index++) {
+            results[str_index] = ascii_int_index[0];
+        }
+    }
+
     //反转字符串
-    for (int i = 0; i < str_index / 2; ++i) {
+    for (uint32_t i = 0; i < str_index / 2; ++i) {
         char t = results[i];
         results[i] = results[str_index - i - 1];
         results[str_index - i - 1] = t;

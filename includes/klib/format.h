@@ -27,10 +27,10 @@
 #include <stdint.h>
 
 typedef struct {
-    size_t size; //格式化后字符串长度
+    uint32_t size; //格式化后字符串长度
     char specifier; //输出格式
-    size_t length; //输出格式前面是否有l ，1为 一个l，2为2个l
-    size_t width; //要输出的字符的最小数目。如果输出的值短于该数，结果会用空格填充。如果输出的值长于该数，结果不会被截断。
+    uint32_t length; //输出格式前面是否有l ，1为 一个l，2为2个l
+    uint32_t width; //要输出的字符的最小数目。如果输出的值短于该数，结果会用空格填充。如果输出的值长于该数，结果不会被截断。
     size_t format_size; //format 所占字符;
 } format_info_t;
 

@@ -23,25 +23,37 @@
  */
 #ifndef LIYUX_OS_GDT_H
 #define LIYUX_OS_GDT_H
+#include "stdint.h"
+
+typedef struct  {
+    uint16_t addr_limit_l;
+    uint16_t addr_base_l;
+    uint8_t addr_base_m;
+    uint8_t type_dpl;
+    uint8_t attr_addr_limit_h;
+    uint8_t addr_base_h;
+} gdt_descriptor_t;
+
+
 
 
 // 设置不同位上的值
-#define SET_TYPE(x) (x << 8) 
-#define SET_S(x) (x << 12) 
-#define SET_DPL(x) (x << 13) 
-#define SET_P(x) (x << 15) 
-#define SET_AVL(x) (x << 20) 
-#define SET_L(x) (x << 21) 
-#define SET_DB(x) (x << 22) 
-#define SET_G(x) (x << 23)
+#define SET_S(x) (x << 4)
+#define SET_DPL(x) (x << 5)
+#define SET_P(x) (x << 7)
+
+#define SET_AVL(x) (x)
+#define SET_L(x) (x << 1)
+#define SET_DB(x) (x << 2)
+#define SET_G(x) (x << 3)
 
 // 段基地址与段界限 设置
-#define SET_LIM_L(x)            (x & 0x0ffff)
-#define SET_LIM_H(x)            (x & 0xf0000)
-#define SET_BASE_L(x)           ((x & 0x0000ffff) << 16)
-#define SET_BASE_M(x)           ((x & 0x00ff0000) >> 16)
-#define SET_BASE_H(x)            (x & 0xff000000)
-
+#define GET_LIM_L(x)            (x & 0x0ffff)
+#define GET_LIM_H(x)            (x & 0xf0000 >> 16)
+#define GET_BASE_L(x)           ((x & 0x0000ffff))
+#define GET_BASE_M(x)           ((x & 0x00ff0000) >> 16)
+#define GET_BASE_H(x)            (x & 0xff000000 >> 24)
+#define GET_BASE(h,m,l)            (( h<< 24) |( m << 16) | l)
 
 //TYPE 的所有枚举
 #define TYPE_DATA_RD         0x00 // Read-Only
@@ -63,14 +75,12 @@
 
 
 
-#define GDT_R0_CODE         SET_TYPE(TYPE_CODE_EXRD) | SET_S(1) | SET_DPL(0) | \
-                            SET_P(1) | SET_AVL(0) | SET_L(0) | SET_DB(1) | \
-                            SET_G(1)
 
-#define GDT_R0_DATA         SET_TYPE(TYPE_DATA_RDWR) | SET_S(1) | SET_DPL(0) | \
-                            SET_P(1) | SET_AVL(0) | SET_L(0) | SET_DB(1) | \
-                            SET_G(1)
+#define GDT_R0_CODE         (TYPE_CODE_EXRD | SET_S(1) | SET_DPL(0) | SET_P(1))
 
+#define GDT_R0_DATA         (TYPE_DATA_RDWR | SET_S(1) | SET_DPL(0) | SET_P(1))
+
+#define GDT_DEF_ATTR        SET_AVL(0) | SET_L(0) | SET_DB(1) |   SET_G(1)
 
 
 #define GDT_SELECTOR_CODE_GLOBAL 0x08
@@ -78,5 +88,7 @@
 
 
 void _init_gdt();
+
+void gdt_print(unsigned int index);
 
 #endif //LIYUX_OS_GDT_H
