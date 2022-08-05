@@ -13,11 +13,7 @@ void _kernel_init() {
     _init_tty(multiboot_info->framebuffer_width, multiboot_info->framebuffer_height);
     _init_idt();
     _init_pic(80,88);
-
      _pci_probe();
-
+    _ahci_init();
     sti();
-
-    pci_device_t *ahci_head = select_pci_by_class(AHCI_CLASS);
-    tty_put_str(ahci_head);
 }

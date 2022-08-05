@@ -20,10 +20,9 @@ void pic_send_end(uint8_t irq){
 }
 
 void _init_pic(int offset1, int offset2){
-    unsigned char a1, a2;
 
-    a1 = inb(PIC1_DATA);                        // save masks
-    a2 = inb(PIC2_DATA);
+    inb(PIC1_DATA);                        // save masks
+    inb(PIC2_DATA);
 
     outb(PIC1_COMMAND, ICW1_INIT | ICW1_ICW4);  // starts the initialization sequence (in cascade mode)
     outb(PIC2_COMMAND, ICW1_INIT | ICW1_ICW4);
