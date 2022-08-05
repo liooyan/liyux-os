@@ -6,6 +6,7 @@
 #define LIYUX_OS_TTY_H
 
 
+#include <stdint.h>
 
 typedef unsigned short vga_attribute;
 
@@ -36,6 +37,7 @@ void tty_put_chr(char chr);
 
 
 void tty_put_str(char *str);
+void tty_put_buffer(char *str,int str_len);
 
 void tty_scroll_up();
 

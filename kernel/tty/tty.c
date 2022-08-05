@@ -2,8 +2,7 @@
 // Created by 李延 on 2022/7/25.
 //
 
-#include "kernel/tty.h"
-#include "stdint.h"
+#include "kernel/tty/tty.h"
 
 //vga 显示的基地址
 vga_attribute *TTY_BASH_ADDRESS ;
@@ -56,6 +55,12 @@ void tty_put_chr(char chr) {
     check_height();
 
 
+}
+
+void tty_put_buffer(char *str,int str_len) {
+    for (int i = 0; i <str_len ; ++i) {
+        tty_put_chr(str[i]);
+    }
 }
 
 

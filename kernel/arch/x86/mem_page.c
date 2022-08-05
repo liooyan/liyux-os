@@ -10,7 +10,7 @@
  */
 
 #include <arch/x86/mem_page.h>
-#include "kernel/tty.h"
+#include "kernel/tty/tty.h"
 #include "arch/x86/cpu.h"
 
 extern uint8_t __kernel_start;

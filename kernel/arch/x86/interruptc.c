@@ -1,6 +1,6 @@
 #include <kernel/interrupt.h>
 
-#include "kernel/tty.h"
+#include "kernel/tty/tty.h"
 #include "arch/x86/pic.h"
 #include "arch/x86/cpu.h"
 

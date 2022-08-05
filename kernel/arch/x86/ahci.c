@@ -3,7 +3,7 @@
 //
 #include "arch/x86/pci.h"
 #include "arch/x86/ahci.h"
-#include "kernel/tty.h"
+#include "kernel/tty/tty.h"
 
 
 
