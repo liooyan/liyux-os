@@ -9,6 +9,13 @@ ENTRY(_start)
 
 
 SECTIONS {
+    . = 0x0;
+
+    .hhk_multiboot BLOCK(4K) : {
+          __kernel_start = .;
+        * (.multiboot)
+    }
+
     . = 0x100000;
 
     /* 这里是我们的高半核初始化代码段和数据段 */

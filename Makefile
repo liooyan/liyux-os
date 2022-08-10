@@ -76,7 +76,7 @@ clean :
 	@rm -rf $(BUILD_DIR) #
 
 qemu :
-	@qemu-system-i386 -cdrom build/iso/liyux-os.iso  -S -s $(QEMU_OPTIONS)
+	@qemu-system-x86_64 -cdrom build/iso/liyux-os.iso  -S -s $(QEMU_OPTIONS)
 
 
 

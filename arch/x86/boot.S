@@ -35,10 +35,8 @@
 
         movl $stack_top, %esp
         movl %ebx,multiboot_info
-        call _hhk_init # 初始化内核
+        call _kernel_init # 初始化内核
 
-
-        call _kernel_init
     1:
         hlt
             jmp 1b
