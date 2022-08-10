@@ -30,7 +30,6 @@ $(ISO_GRUB_DIR):
 	@mkdir -p $(ISO_GRUB_DIR) #
 
 
-
 # 编译所有.S 文件
 $(OBJECT_DIR)/%.S.o: %.S
 	@mkdir -p $(@D) #
