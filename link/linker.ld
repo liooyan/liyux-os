@@ -9,12 +9,6 @@ ENTRY(_start)
 
 
 SECTIONS {
-    . = 0x0;
-
-    .hhk_multiboot BLOCK(4K) : {
-          __kernel_start = .;
-        * (.multiboot)
-    }
 
     . = 0x100000;
 

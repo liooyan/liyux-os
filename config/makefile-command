@@ -4,7 +4,7 @@ ifeq ($(OS),Windows_NT)
 
   CC := gcc
   AS := as
-
+  LD := ld
 else
 
 # Linux 环境下的变量
@@ -12,6 +12,7 @@ else
 
   CC := gcc
   AS := as
+  LD := ld
 
  endif
 endif
@@ -22,8 +23,8 @@ DEBUG = -g3
 
 
 
-ARCH_OPT := -D__ARCH_IA32
+ARCH_OPT :=  -m32
 O := -Og
 W := -Wall -Wextra -Wno-unknown-pragmas
-CFLAGS := -std=gnu99 -ffreestanding $(O) $(W)
-LDFLAGS := -static -ffreestanding $(O) -nostdlib -lgcc
+CFLAGS := -std=gnu99 -ffreestanding $(O) $(W) -nostdinc $(ARCH_OPT)
+LDFLAGS := -static   -nostdlib  -m elf_i386

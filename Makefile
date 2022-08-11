@@ -34,7 +34,7 @@ $(ISO_GRUB_DIR):
 $(OBJECT_DIR)/%.S.o: %.S
 	@mkdir -p $(@D) #
 	@echo " BUILD: $<"
-	$(CC) $(INCLUDES) $(DEBUG)    -c $< -o $@
+	$(CC) $(INCLUDES) $(DEBUG)    -c $< -o $@ $(CFLAGS)
 
 
 # 编译所有.c 文件
@@ -47,13 +47,14 @@ $(OBJECT_DIR)/%.c.o: %.c
 # 编译内核文件
 $(TARGET_DIR)/$(PROJECT_NAME): $(OBJECT_DIR) $(TARGET_DIR) $(ISO_GRUB_DIR) $(SRC)
 	@echo " LINK: $(TARGET_DIR)/$(PROJECT_NAME)"
-	$(CC) -T link/linker.ld -o $(TARGET_DIR)/$(PROJECT_NAME).bin $(SRC) $(LDFLAGS)
-	objcopy --only-keep-debug $(TARGET_DIR)/$(PROJECT_NAME).bin $(TARGET_DIR)/$(PROJECT_NAME).debug
+	$(LD)  -T link/linker.ld -o $(TARGET_DIR)/$(PROJECT_NAME).elf $(SRC) $(LDFLAGS)
+	objcopy --only-keep-debug $(TARGET_DIR)/$(PROJECT_NAME).elf $(TARGET_DIR)/$(PROJECT_NAME).debug
+	objcopy  -O binary $(TARGET_DIR)/$(PROJECT_NAME).elf $(TARGET_DIR)/$(PROJECT_NAME).bin
 
 # 使用grub打包
 $(PROJECT_NAME) :  $(TARGET_DIR)/$(PROJECT_NAME)
 	@./config-grub.sh ${PROJECT_NAME}  $(ISO_GRUB_DIR)/grub.cfg
-	@cp $(TARGET_DIR)/$(PROJECT_NAME).bin $(ISO_BOOT_DIR)
+	@cp $(TARGET_DIR)/$(PROJECT_NAME).elf $(ISO_BOOT_DIR)
 	@grub-mkrescue -o $(ISO_DIR)/$(PROJECT_NAME).iso $(ISO_DIR)
 
 
@@ -74,8 +75,9 @@ bochs_run: clean $(PROJECT_NAME)
 clean :
 	@rm -rf $(BUILD_DIR) #
 
-qemu :
-	@qemu-system-x86_64 -cdrom build/iso/liyux-os.iso  -S -s $(QEMU_OPTIONS)
+
+qemu : linux
+	@qemu-system-i386 -cdrom build/iso/liyux-os.iso -s -S
 
 
 

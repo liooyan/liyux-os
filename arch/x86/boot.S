@@ -34,7 +34,6 @@
         cli
 
         movl $stack_top, %esp
-        movl %ebx,multiboot_info
         call _kernel_init # 初始化内核
 
     1:
