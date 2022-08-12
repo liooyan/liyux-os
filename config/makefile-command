@@ -2,17 +2,23 @@
 # windows 环境下的变量
 ifeq ($(OS),Windows_NT)
 
-  CC := gcc
-  AS := as
-  LD := ld
+  CC_i686 := gcc
+  AS_i686 := as
+
+  CC_x86_64 := gcc
+  AS_x86_64 := as
+
 else
 
 # Linux 环境下的变量
  ifeq ($(shell uname),Linux)
 
-  CC := gcc
-  AS := as
-  LD := ld
+  CC_i686 := i686-elf-gcc
+  AS_i686 := i686-elf-as
+
+  CC_x86_64 := x86_64-elf-gcc
+  AS_x86_64 := x86_64-elf-as
+
 
  endif
 endif
@@ -22,9 +28,11 @@ endif
 DEBUG = -g3
 
 
-
-ARCH_OPT :=  -m32
+ARCH_OPT := -D__ARCH_IA32
 O := -Og
 W := -Wall -Wextra -Wno-unknown-pragmas
-CFLAGS := -std=gnu99 -ffreestanding $(O) $(W) -nostdinc $(ARCH_OPT)
-LDFLAGS := -static   -nostdlib  -m elf_i386
+CFLAGS := -std=gnu99 -ffreestanding $(O) $(W) $(ARCH_OPT) $(DEBUG)
+LDFLAGS := -ffreestanding $(O) -nostdlib -lgcc $(DEBUG)
+
+
+SCAN_SRC = $(shell find $(1) -name "*.[cS]")

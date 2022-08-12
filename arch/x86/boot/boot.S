@@ -34,6 +34,7 @@
         cli
 
         movl $stack_top, %esp
+        pushl %ebx
         call _kernel_init # 初始化内核
 
     1:
