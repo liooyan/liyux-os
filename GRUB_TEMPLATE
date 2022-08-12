@@ -3,5 +3,5 @@ timeout=0
 
 menuentry "liyux-os" {
 	multiboot /boot/setup.elf
-    module /boot/kernel.elf "kernel_elf"
+    module /boot/kernel.elf "kernel"
 }

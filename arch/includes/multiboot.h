@@ -8,6 +8,8 @@ typedef unsigned short multiboot_uint16_t;
 typedef unsigned int multiboot_uint32_t;
 typedef unsigned long long multiboot_uint64_t;
 
+#define MULTIBOOT_INFO_MODS                     0x00000008
+
 struct multiboot_symbol_table {
     multiboot_uint32_t tabsize;
     multiboot_uint32_t strsize;
@@ -101,5 +103,19 @@ struct multiboot_info {
 };
 typedef struct multiboot_info multiboot_info_t;
 
+
+struct multiboot_mod_list
+{
+    /* the memory used goes from bytes ’mod_start’ to ’mod_end-1’ inclusive */
+    multiboot_uint32_t mod_start;
+    multiboot_uint32_t mod_end;
+
+    /* Module command line */
+    multiboot_uint32_t cmdline;
+
+    /* padding to take it to 16 bytes (must be zero) */
+    multiboot_uint32_t pad;
+};
+typedef struct multiboot_mod_list multiboot_module_t;
 
 #endif
