@@ -10,7 +10,9 @@
 /* Must pass memory information to OS. */
 #define MULTIBOOT_MEMORY_INFO                   0x00000002
 
-#define BOOT_GDT_CODE 0x08
-#define BOOT_GDT_DATA 0x10
+
+#define  STACK_SIZE 16318 * 2
+#define  HEAP_SIZE 16318 * 2
+
 
 #endif

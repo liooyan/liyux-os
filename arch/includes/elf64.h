@@ -16,23 +16,56 @@ typedef uint64_t Elf64_Addr;
 
 typedef struct
 {
-    unsigned char	e_ident[EI_NIDENT];	/* Magic number and other info */
-    Elf64_Half	e_type;			/* Object file type */
-    Elf64_Half	e_machine;		/* Architecture */
-    Elf64_Word	e_version;		/* Object file version */
-    Elf64_Addr	e_entry;		/* Entry point virtual address */
-    Elf64_Off	e_phoff;		/* Program header table file offset */
-    Elf64_Off	e_shoff;		/* Section header table file offset */
+    unsigned char	e_ident[EI_NIDENT];	/* 魔数固定的ELF， EI_NIDENT 为16个字节 */
+    Elf64_Half	e_type;			/* 该文件的类型 2字节 */
+    Elf64_Half	e_machine;		/* 该程序需要的体系架构 2字节 */
+    Elf64_Word	e_version;		/* 文件的版本 4字节 */
+    Elf64_Addr	e_entry;		/* 程序的入口地址 8字节 */
+    Elf64_Off	e_phoff;		/* Program header table（程序） 在文件中的偏移量 8字节 */
+    Elf64_Off	e_shoff;		/* Section header table（节头表） 在文件中的偏移量 8字节 */
     Elf64_Word	e_flags;		/* Processor-specific flags */
-    Elf64_Half	e_ehsize;		/* ELF header size in bytes */
-    Elf64_Half	e_phentsize;		/* Program header table entry size */
-    Elf64_Half	e_phnum;		/* Program header table entry count */
-    Elf64_Half	e_shentsize;		/* Section header table entry size */
-    Elf64_Half	e_shnum;		/* Section header table entry count */
-    Elf64_Half	e_shstrndx;		/* Section header string table index */
+    Elf64_Half	e_ehsize;		/* 表示ELF header大小 2字节 */
+    Elf64_Half	e_phentsize;		/* 表示Program header table中每一个条目的大小 2字节 */
+    Elf64_Half	e_phnum;		/* 表示Program header table中有多少个条目 2字节 */
+    Elf64_Half	e_shentsize;		/* 表示Section header table中的每一个条目的大小 2字节 */
+    Elf64_Half	e_shnum;		/* 表示Section header table中有多少个条目 2字节 */
+    Elf64_Half	e_shstrndx;		/* 包含节名称的字符串是第几个节 2字节 */
 } Elf64_Ehdr;
 
+typedef struct {
+    uint32_t   sh_name;  // 节区名称相对于字符串表的位置偏移
+    uint32_t   sh_type;  // 节区类型
+    uint64_t   sh_flags;  // 节区标志位集合
+    Elf64_Addr sh_addr;  // 节区装入内存的地址
+    Elf64_Off  sh_offset;  // 节区相对于文件的位置偏移
+    uint64_t   sh_size;  // 节区内容大小
+    uint32_t   sh_link;  // 指定链接的节索引，与具体的节有关
+    uint32_t   sh_info;  // 指定附加信息
+    uint64_t   sh_addralign;  // 节装入内存的地址对齐要求
+    uint64_t   sh_entsize;  // 指定某些节的固定表大小，与具体的节有关
+} Elf64_Shdr;
 
 
-void  load_elf64(uint32_t start_addr,uint32_t end_addr);
+typedef struct
+{
+    Elf64_Addr	mapping_addr; //映射起始地址
+    uint32_t  start_addr; //当前段的物理起始地址
+    uint32_t  addr_size; //当前段的物理结束地址
+} Elf64_Table_Addr;
+
+typedef struct
+{
+
+    Elf64_Addr	start_addr; //代码入库地址
+    Elf64_Half elf_hdr_table_num;
+    Elf64_Table_Addr *elf_hdr_table;
+
+} Elf64_Meg;
+
+
+
+
+
+
+Elf64_Meg *load_elf64(uint32_t start_addr,uint32_t end_addr);
 #endif //LIYUX_OS_X86_64_ELF64_H

@@ -16,10 +16,14 @@ SECTIONS {
        *.o  (.usrtext)
           . = ALIGN(4K);
     }
+    .setup_heap BLOCK(4K) :{
+        *.o (.setup_heap)
+        . = ALIGN(4K);
+    }
 
     .bss BLOCK(4K) :  {
         *.o  (.bss)
-           . = ALIGN(4K);
+        . = ALIGN(4K);
     }
 
     .data BLOCK(4k) : {
