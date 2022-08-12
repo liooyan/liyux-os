@@ -17,7 +17,7 @@ INCLUDES_DIR := includes
 
 
 INCLUDES_SHARED_DIR := includes/shared
-INCLUDES_SETUP_DIR := ${CORE_BASH_PATH}/includes
+INCLUDES_SETUP_DIR := arch/includes
 
 
 

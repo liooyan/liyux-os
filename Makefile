@@ -6,6 +6,7 @@ KERNEL_SRC := $(patsubst ./%, $(OBJECT_DIR)/%_x86_64.o, $(call SCAN_SRC,./kernel
 lib_SRC := $(patsubst ./%, $(OBJECT_DIR)/%_x86_64.o, $(call SCAN_SRC,./lib))
 
 SET_UP_SRC :=  $(patsubst ./%, $(OBJECT_DIR)/%_i686.o, $(call SCAN_SRC,./${CORE_BASH_PATH}/boot))
+SET_UP_LIB_SRC :=  $(patsubst ./%, $(OBJECT_DIR)/%_i686.o, $(call SCAN_SRC,./arch/lib))
 
 #内核的依赖
 INCLUDES := $(patsubst %, -I%, $(INCLUDES_DIR))
@@ -46,9 +47,9 @@ $(OBJECT_DIR)/%.c_i686.o: %.c
 	@mkdir -p $(@D)
 	$(CC_i686) $(INCLUDES_SHARED)   $(INCLUDES_SETUP)    -c $< -o $@ $(CFLAGS)
 # 编译setup文件
-$(TARGET_DIR)/setup.elf :$(OBJECT_DIR) $(TARGET_DIR) $(ISO_GRUB_DIR) $(SET_UP_SRC)
+$(TARGET_DIR)/setup.elf :$(OBJECT_DIR) $(TARGET_DIR) $(ISO_GRUB_DIR) $(SET_UP_SRC) $(SET_UP_LIB_SRC)
 	@echo " LINK: $(TARGET_DIR)/setup.elf"
-	$(CC_i686)  -T ${CORE_BASH_PATH}/boot/setup.ld  -o $(TARGET_DIR)/setup.elf $(SET_UP_SRC) $(LDFLAGS)
+	$(CC_i686)  -T ${CORE_BASH_PATH}/boot/setup.ld  -o $(TARGET_DIR)/setup.elf $(SET_UP_SRC) $(SET_UP_LIB_SRC) $(LDFLAGS)
 
 
 
