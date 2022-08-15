@@ -3,6 +3,7 @@
 //
 
 #include "tty.h"
+#include "stdio.h"
 
 //vga 显示的基地址
 vga_attribute *TTY_BASH_ADDRESS ;
@@ -33,10 +34,11 @@ void _init_tty(int width,int height){
     //设置颜色
     tty_set_theme(VGA_COLOR_WHITE,VGA_COLOR_BLACK);
 
-    _init_tty_bash_address((vga_attribute *) 0xB8000);
+    _init_tty_bash_address((vga_attribute *) VGA_BASH_ADDR);
 
     //清屏
     tty_clear();
+    kprintf("The display initialization is complete\n");
 }
 
 

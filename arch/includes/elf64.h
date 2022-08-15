@@ -5,7 +5,8 @@
 #ifndef LIYUX_OS_X86_64_ELF64_H
 #define LIYUX_OS_X86_64_ELF64_H
 #include "stdint.h"
-
+#include "multiboot.h"
+#include "kmem.h"
 typedef uint16_t Elf64_Half;
 typedef uint32_t Elf64_Word;
 typedef	int32_t  Elf64_Sword;
@@ -46,26 +47,11 @@ typedef struct {
 } Elf64_Shdr;
 
 
-typedef struct
-{
-    Elf64_Addr	mapping_addr; //映射起始地址
-    uint32_t  start_addr; //当前段的物理起始地址
-    uint32_t  addr_size; //当前段的物理结束地址
-} Elf64_Table_Addr;
 
-typedef struct
-{
-
-    Elf64_Addr	start_addr; //代码入库地址
-    Elf64_Half elf_hdr_table_num;
-    Elf64_Table_Addr *elf_hdr_table;
-
-} Elf64_Meg;
+#define KERNEL_ELF_NAME kernel
 
 
 
 
-
-
-Elf64_Meg *load_elf64(uint32_t start_addr,uint32_t end_addr);
+Elf64_Meg *loading_kernel(multiboot_info_t *multiboot_info);
 #endif //LIYUX_OS_X86_64_ELF64_H

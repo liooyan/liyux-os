@@ -16,6 +16,7 @@ static int str2int(const char *chr, size_t *value);
 void format_init(const char *format, format_info_t *format_info) {
     char *format_star = format;
     format_info->length = 0;
+    format_info->width = 0;
     while ((*format)) {
         if (is_specifier(*format)) {
             format_info->specifier = *format;

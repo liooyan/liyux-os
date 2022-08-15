@@ -8,6 +8,8 @@
 
 #include <stdint.h>
 
+#define VGA_BASH_ADDR 0xB8000
+
 typedef unsigned short vga_attribute;
 
 #define VGA_COLOR_BLACK 0

@@ -4,6 +4,7 @@
 
 #ifndef LIYUX_OS_CPU_H
 #define LIYUX_OS_CPU_H
+
 #include "stdint.h"
 
 static inline uint32_t cpu_rcr0()
@@ -27,6 +28,14 @@ static inline uint32_t cpu_rcr3()
     return val;
 }
 
+static inline uint32_t cpu_rcr4()
+{
+    uint32_t val;
+    asm volatile("movl %%cr4,%0" : "=r"(val));
+    return val;
+}
+
+
 
 static inline void cpu_lcr0(uint32_t v)
 {
@@ -44,12 +53,21 @@ static inline void cpu_lcr3(uint32_t v)
 }
 
 
+static inline void cpu_lcr4(uint32_t v)
+{
+    asm("mov %0, %%cr4" ::"r"(v));
+}
+
+
 inline void cpu_lidt(uint32_t *index)
 {
     asm("lidt %0" ::"m"(*index));
 }
 
-
+inline void cpu_lgdt(uint32_t *index)
+{
+    asm("lgdt %0" ::"m"(*index));
+}
 
 static inline uint8_t inb(uint16_t port)
 {
@@ -84,6 +102,9 @@ static inline void io_wait(void)
 {
     outb(0x80, 0);
 }
+
+
+
 
 #define sti() __asm__ ("sti"::)
 #endif //LIYUX_OS_CPU_H

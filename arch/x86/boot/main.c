@@ -5,34 +5,33 @@
 
 #include "multiboot.h"
 #include "tty.h"
-#include "stdio.h"
 #include "elf64.h"
 #include "boot.h"
 #include "malloc.h"
+#include "kmem.h"
+#include "stdio.h"
 
-int _setup_init(multiboot_info_t *multiboot_info,uint32_t heap_addr ) {
+void _jump_to_64(kernel_hold_mem *hold_mem);
+
+int _setup_init(multiboot_info_t *multiboot_info, uint32_t heap_addr) {
+    //初始化屏幕信息
     _init_tty(multiboot_info->framebuffer_width, multiboot_info->framebuffer_height);
-    kprintf("The display initialization is complete\n");
-    heap_init(heap_addr,HEAP_SIZE);
+    //初始化堆
+    heap_init(heap_addr, HEAP_SIZE);
     //加载64位内核代码
-    multiboot_uint32_t mb_flags = multiboot_info->flags;
-    if (mb_flags & MULTIBOOT_INFO_MODS) {
-        multiboot_uint32_t mods_count = multiboot_info->mods_count;
-        multiboot_uint32_t mods_addr = multiboot_info->mods_addr;
-        kprintf("find module num %d\n", mods_count);
-        for (uint32_t mod = 0; mod < mods_count; mod++) {
-            multiboot_module_t *module = (multiboot_module_t *) (mods_addr + (mod * sizeof(multiboot_module_t)));
-            const char *module_string = (const char *) module->cmdline;
-            kprintf("module [%s] loading ,start at [%d], end at [%d]\n", module_string, module->mod_start, module->mod_end);
+    Elf64_Meg *kernel_info = loading_kernel(multiboot_info);
 
-            Elf64_Meg *elf_info = load_elf64(module->mod_start, module->mod_end);
-            kprintf("module [%s]  loaded, code start is [0x%llx], hdr table num is [%d]\n",module_string, elf_info->start_addr,elf_info->elf_hdr_table_num);
+    kernel_hold_mem *hold_mem = malloc(sizeof(kernel_hold_mem));
+
+    //设在64位相关内容
+    cut64(hold_mem, kernel_info);
+    uint32_t *b = 0x100000;
+    kprintf("[%x]",*b);
+    uint32_t *a = 0xc8000000;
+    kprintf("[%x]",*a);
+    _jump_to_64(hold_mem);
+    //跳转到内核
 
 
-
-        }
-
-    }
-
-    return 1;
+    return kernel_info;
 }

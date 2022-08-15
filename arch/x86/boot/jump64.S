@@ -1,0 +1,12 @@
+#include <boot.h>
+
+
+
+.section .text
+    .global _jump_to_64
+    _jump_to_64:
+        /* 更新 CS:EIP */
+        ljmp $BOOT_GDT_CODE,$3358720
+
+
+
