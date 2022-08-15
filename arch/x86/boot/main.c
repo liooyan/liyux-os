@@ -13,7 +13,7 @@
 
 void _jump_to_64(kernel_hold_mem *hold_mem);
 
-int _setup_init(multiboot_info_t *multiboot_info, uint32_t heap_addr) {
+void _setup_init(multiboot_info_t *multiboot_info, uint32_t heap_addr) {
     //初始化屏幕信息
     _init_tty(multiboot_info->framebuffer_width, multiboot_info->framebuffer_height);
     //初始化堆
@@ -29,6 +29,4 @@ int _setup_init(multiboot_info_t *multiboot_info, uint32_t heap_addr) {
     _jump_to_64(hold_mem);
     //跳转到内核
 
-
-    return kernel_info;
 }

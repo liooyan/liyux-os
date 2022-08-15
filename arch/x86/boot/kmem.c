@@ -121,8 +121,8 @@ static void set_mem_page(kernel_hold_mem *hold_mem, Elf64_Meg *kernel_info) {
     //分配vga显示空间
     Addr_section vgaAddrSection  = {
             .mapping_addr = VGA_BASH_ADDR,
-            .addr_size = VGA_BASH_ADDR,
-            .start_addr = X86_MEM_PAGE_SIZE
+            .start_addr = VGA_BASH_ADDR,
+            .addr_size = X86_MEM_PAGE_SIZE
     };
     set_page(&vgaAddrSection);
 
