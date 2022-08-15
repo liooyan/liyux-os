@@ -22,7 +22,6 @@ void _setup_init(multiboot_info_t *multiboot_info, uint32_t heap_addr) {
     Elf64_Meg *kernel_info = loading_kernel(multiboot_info);
 
     kernel_hold_mem *hold_mem = malloc(sizeof(kernel_hold_mem));
-
     //设在64位相关内容
     cut64(hold_mem, kernel_info);
     kprintf("set cpu 64 end,will jump to kernel");

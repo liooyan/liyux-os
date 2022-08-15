@@ -10,6 +10,11 @@
 static uint64_t *base_page;
 
 
+static inline void rdmsr()
+{
+    asm volatile ( "movl $0xc0000080, %ecx \n rdmsr \n btsl $8, %eax \nwrmsr");
+}
+
 /**
  * 设在临时的64位堆内存，设置2两个4G的内存
  * @param hold_mem

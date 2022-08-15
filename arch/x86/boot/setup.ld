@@ -5,7 +5,6 @@ ENTRY(_start)
 SECTIONS {
 
     . = 0x100000;
-
     /* setup 引导开始…… */
     .text BLOCK(4K) :  {
      * (.multiboot)
@@ -36,5 +35,4 @@ SECTIONS {
            . = ALIGN(4K);
     }
 
-    __upset_end = ALIGN(4K);
 }

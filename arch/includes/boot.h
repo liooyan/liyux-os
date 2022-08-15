@@ -16,5 +16,6 @@
 
 
 #define BOOT_GDT_CODE 0x08
+#define BOOT_GDT_DATA 0x10
 
 #endif

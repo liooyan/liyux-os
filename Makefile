@@ -106,7 +106,7 @@ clean :
 
 
 qemu :
-	@qemu-system-i386 -cdrom build/iso/liyux-os.iso -s -S
+	@qemu-system-x86_64 -cdrom build/iso/liyux-os.iso -s -S
 
 
 

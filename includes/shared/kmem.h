@@ -76,10 +76,6 @@ typedef struct  {
     uint32_t *gdt;
 } __attribute__((packed)) gdt_index_t ;
 
-static inline void rdmsr()
-{
-    asm volatile ( "movl $0xc0000080, %ecx \n rdmsr \n btsl $8, %eax \nwrmsr");
-}
 
 void cut64(kernel_hold_mem *hold_mem, Elf64_Meg *kernel_info);
 #endif //LIYUX_OS_KMEM_H
