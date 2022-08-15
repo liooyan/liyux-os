@@ -25,10 +25,7 @@ int _setup_init(multiboot_info_t *multiboot_info, uint32_t heap_addr) {
 
     //设在64位相关内容
     cut64(hold_mem, kernel_info);
-    uint32_t *b = 0x100000;
-    kprintf("[%x]",*b);
-    uint32_t *a = 0xc8000000;
-    kprintf("[%x]",*a);
+    kprintf("set cpu 64 end,will jump to kernel");
     _jump_to_64(hold_mem);
     //跳转到内核
 
