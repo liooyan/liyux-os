@@ -11,7 +11,7 @@
         movw %cx, %fs
         movw %cx, %gs
         movw %cx, %ss
-        movq $0xffffffffffffffff, %r8
+        movq %rax,%rdi
         call main
     1:
         hlt
