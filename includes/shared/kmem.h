@@ -74,7 +74,7 @@ typedef struct {
 typedef struct  {
     uint16_t _gdt_limit;
     uint32_t *gdt;
-} __attribute__((packed)) idt_index_t ;
+} __attribute__((packed)) gdt_index_t ;
 
 static inline void rdmsr()
 {

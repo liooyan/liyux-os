@@ -23,27 +23,13 @@ static void set_gdt(kernel_hold_mem *hold_mem) {
     gdt[0] = 0x0000000000000000;
     gdt[1] = 0x00af9a000000ffff; //code
     gdt[2] = 0x00cf92000000ffff; //data
-    idt_index_t idt_index;
-    idt_index._gdt_limit = sizeof(uint64_t) * gdt_len;
-    idt_index.gdt = gdt;
-    cpu_lgdt((uint32_t *) &idt_index);
+    gdt_index_t gdt_index;
+    gdt_index._gdt_limit = sizeof(uint64_t) * gdt_len;
+    gdt_index.gdt = gdt;
+    cpu_lgdt((uint32_t *) &gdt_index);
 
 }
 
-static void set_idt() {
-
-    int gdt_len = 256;
-
-    uint64_t *gdt = malloc(sizeof(uint64_t) * gdt_len);
-    for (int i = 0; i < gdt_len; ++i) {
-            gdt[i] = 0x860000100000;
-    }
-    idt_index_t idt_index;
-    idt_index._gdt_limit = sizeof(uint64_t) * gdt_len;
-    idt_index.gdt = gdt;
-    cpu_lidt((uint32_t *) &idt_index);
-
-}
 
 
 
