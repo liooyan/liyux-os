@@ -7,4 +7,3 @@ int main(boot_params_t *boot_params){
 
     return  boot_params->kernel.start_addr;
 }
-

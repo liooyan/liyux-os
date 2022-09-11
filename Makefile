@@ -8,6 +8,9 @@ lib_SRC := $(patsubst ./%, $(OBJECT_DIR)/%_x86_64.o, $(call SCAN_SRC,./lib))
 SET_UP_SRC :=  $(patsubst ./%, $(OBJECT_DIR)/%_i686.o, $(call SCAN_SRC,./${CORE_BASH_PATH}/boot))
 SET_UP_LIB_SRC :=  $(patsubst ./%, $(OBJECT_DIR)/%_i686.o, $(call SCAN_SRC,./arch/lib))
 
+
+BOOT_SRC := $(patsubst ./%, $(OBJECT_DIR)/%_x86_64.o, $(call SCAN_SRC,./boot))
+
 #内核的依赖
 INCLUDES := $(patsubst %, -I%, $(INCLUDES_DIR))
 
@@ -70,15 +73,19 @@ $(TARGET_DIR)/kernel.elf: $(OBJECT_DIR) $(TARGET_DIR) $(ISO_GRUB_DIR) $(INIT_SRC
 	$(CC_x86_64)  -T init/kernel.ld -o $(TARGET_DIR)/kernel.elf $(INIT_SRC)  $(KERNEL_SRC)  $(lib_SRC) $(LDFLAGS)
 
 
-
+# 编译内核文件
+$(TARGET_DIR)/boot.elf: $(BOOT_SRC)
+	@echo " LINK: $(TARGET_DIR)/boot.elf"
+	$(CC_x86_64)  -T boot/boot.ld -o $(TARGET_DIR)/boot.elf $(BOOT_SRC) $(LDFLAGS)
 
 
 
 # 使用grub打包
-$(PROJECT_NAME) :  $(TARGET_DIR)/kernel.elf $(TARGET_DIR)/setup.elf
+$(PROJECT_NAME) :  $(TARGET_DIR)/kernel.elf $(TARGET_DIR)/setup.elf $(TARGET_DIR)/boot.elf
 	@cp GRUB_TEMPLATE  $(ISO_GRUB_DIR)/grub.cfg
 	@cp $(TARGET_DIR)/kernel.elf $(ISO_BOOT_DIR)
 	@cp $(TARGET_DIR)/setup.elf $(ISO_BOOT_DIR)
+	@cp $(TARGET_DIR)/boot.elf $(ISO_BOOT_DIR)
 	@grub-mkrescue -o $(ISO_DIR)/$(PROJECT_NAME).iso $(ISO_DIR)
 
 

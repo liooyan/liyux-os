@@ -48,14 +48,15 @@ typedef struct {
 typedef struct {
     uint64_t start_addr; //代码入库地址
     uint64_t elf_hdr_table_num;
-    Addr_section *addr_section;
+    Addr_section addr_section[50];
 
 } Elf64_Meg;
 
 
 typedef struct {
-    Addr_section kernel[64]; //内核所用的空间
-} boot_params;
+    Elf64_Meg boot;
+    Elf64_Meg kernel; //内核所用的空间
+} boot_params_t;
 
 
 typedef struct {
@@ -64,6 +65,6 @@ typedef struct {
 } __attribute__((packed)) gdt_index_t;
 
 
-void cut64(boot_params *hold_mem, Elf64_Meg *kernel_info);
+void cut64(boot_params_t *boot_params);
 
 #endif //LIYUX_OS_KMEM_H

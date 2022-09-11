@@ -7,5 +7,5 @@
 
 void strcopy(char *source,char *target);
 
-
+int streq(const char *source,const char *target);
 #endif //LIYUX_OS_STRING_H

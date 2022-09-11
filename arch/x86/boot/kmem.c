@@ -6,7 +6,7 @@
 #include "malloc.h"
 #include "x86/boot/cpu.h"
 #include "tty.h"
-
+#include "string.h"
 static uint64_t *base_page;
 
 
@@ -18,7 +18,7 @@ static inline void rdmsr() {
  * 设在临时的64位堆内存，设置2两个4G的内存
  * @param hold_mem
  */
-static void set_gdt(boot_params *hold_mem) {
+static void set_gdt() {
 
     int gdt_len = 4;
 
@@ -84,7 +84,8 @@ static void set_page(Addr_section *addrSection) {
  * @param hold_mem
  * @param kernel_info
  */
-static void set_mem_page(boot_params *hold_mem, Elf64_Meg *kernel_info) {
+static void set_mem_page(boot_params_t *boot_arams) {
+    Elf64_Meg *kernel_info = &boot_arams->boot;
     base_page = malloc_4k(X86_MEM_PAGE_SIZE);
     Addr_section setupAddr = {
             .mapping_addr = 0x00100000,
@@ -95,9 +96,6 @@ static void set_mem_page(boot_params *hold_mem, Elf64_Meg *kernel_info) {
     //分配kernel
     for (uint64_t i = 0; i < kernel_info->elf_hdr_table_num; ++i) {
         Addr_section *addrSection = kernel_info->addr_section + i;
-        hold_mem->kernel[i].mapping_addr = addrSection->mapping_addr,
-        hold_mem->kernel[i].addr_size = addrSection->addr_size,
-        hold_mem->kernel[i].start_addr = addrSection->start_addr;
         if (addrSection->addr_size > 0 && addrSection->mapping_addr > 0) {
             set_page(addrSection);
             Addr_section oldAddrSection = {
@@ -122,7 +120,7 @@ static void set_mem_page(boot_params *hold_mem, Elf64_Meg *kernel_info) {
 }
 
 
-void cut64(boot_params *hold_mem, Elf64_Meg *kernel_info) {
+void cut64(boot_params_t *boot_params) {
 
     //设置一个空的idt
     //set_idt();
@@ -130,8 +128,8 @@ void cut64(boot_params *hold_mem, Elf64_Meg *kernel_info) {
     uint32_t cr4 = cpu_rcr4();
     cpu_lcr4(X86_CR4_PAE | cr4);
 
-    set_gdt(hold_mem); //设置64位的段
-    set_mem_page(hold_mem, kernel_info);//设置4段的分页
+    set_gdt(); //设置64位的段
+    set_mem_page(boot_params);//设置4段的分页
     rdmsr();
     unsigned int cr0 = cpu_rcr0();
     cpu_lcr0(0x80010000 | cr0);

@@ -54,5 +54,5 @@ typedef struct {
 
 
 
-Elf64_Meg *loading_kernel(multiboot_info_t *multiboot_info);
+void loading_kernel(multiboot_info_t *multiboot_info,boot_params_t  *boot_params);
 #endif //LIYUX_OS_X86_64_ELF64_H

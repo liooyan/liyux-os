@@ -1,10 +1,10 @@
-ENTRY(main)
+ENTRY(_start)
 
 
 
 SECTIONS {
 
-    . = 0xffffffc8000000;
+    . = 0xc8000000;
 
     .text BLOCK(4K) :  {
       *.o (.text)
