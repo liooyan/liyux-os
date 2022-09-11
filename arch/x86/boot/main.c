@@ -11,7 +11,7 @@
 #include "kmem.h"
 #include "stdio.h"
 
-void _jump_to_64(kernel_hold_mem *hold_mem);
+void _jump_to_64(boot_params *hold_mem);
 
 void _setup_init(multiboot_info_t *multiboot_info, uint32_t heap_addr) {
     //初始化屏幕信息
@@ -21,7 +21,7 @@ void _setup_init(multiboot_info_t *multiboot_info, uint32_t heap_addr) {
     //加载64位内核代码
     Elf64_Meg *kernel_info = loading_kernel(multiboot_info);
 
-    kernel_hold_mem *hold_mem = malloc(sizeof(kernel_hold_mem));
+    boot_params *hold_mem = malloc(sizeof(boot_params));
     //设在64位相关内容
     cut64(hold_mem, kernel_info);
     kprintf("set cpu 64 end,will jump to kernel");

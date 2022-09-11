@@ -4,7 +4,7 @@
 #include "elf64.h"
 #include "stdio.h"
 #include "malloc.h"
-
+#include "string.h"
 
 static Elf64_Meg *load_elf64(uint32_t start_addr, uint32_t end_addr) {
     Elf64_Ehdr *elf_hdr = (Elf64_Ehdr *) start_addr;
@@ -16,16 +16,25 @@ static Elf64_Meg *load_elf64(uint32_t start_addr, uint32_t end_addr) {
     elf64_meg->start_addr = elf_hdr->e_entry;
     elf64_meg->addr_section = table_addr;
     elf64_meg->elf_hdr_table_num = elf_hdr_table_num;
+    char *strtab_start ;
+    //find 字符串表
+    for (int i = 0; i < elf_hdr_table_num; ++i) {
+        Elf64_Shdr *shdr = (start_addr+elf_hdr->e_shoff+sizeof(Elf64_Shdr)*i);
+        if (shdr->sh_type == SHT_STRTAB){
+            strtab_start = start_addr+shdr->sh_offset;
+        }
+    }
+
 
     //解析每个节
     for (int i = 0; i < elf_hdr_table_num; ++i) {
         Elf64_Shdr *shdr = (start_addr+elf_hdr->e_shoff+sizeof(Elf64_Shdr)*i);
         Addr_section *next_table = table_addr+i;
-
+        char *name =  strtab_start+shdr->sh_name;
         next_table->mapping_addr = shdr->sh_addr;
         next_table->start_addr = start_addr+shdr->sh_offset;
         next_table->addr_size = shdr->sh_size;
-
+        strcopy(name, (char *) &next_table->name);
     }
     return elf64_meg;
 }

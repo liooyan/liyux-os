@@ -15,6 +15,7 @@ typedef uint64_t Elf64_Addr;
 
 #define EI_NIDENT (16)
 
+#define  SHT_STRTAB 3
 typedef struct
 {
     unsigned char	e_ident[EI_NIDENT];	/* 魔数固定的ELF， EI_NIDENT 为16个字节 */

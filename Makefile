@@ -102,12 +102,13 @@ bochs_run: clean $(PROJECT_NAME)
 	bochs -q -f ./bochs/bochs_run.cfg
 
 clean :
-	@rm -rf $(BUILD_DIR) #
+	@rm -rf $(BUILD_DIR)
 
 
-qemu :
+qemu-32 : clean $(PROJECT_NAME)
+	@qemu-system-i386 -cdrom build/iso/liyux-os.iso -s -S
+
+
+qemu-064 : clean $(PROJECT_NAME)
 	@qemu-system-x86_64 -cdrom build/iso/liyux-os.iso -s -S
-
-
-
 
