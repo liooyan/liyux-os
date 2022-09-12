@@ -37,6 +37,7 @@
 
 
 #include "stdint.h"
+#include "multiboot.h"
 
 typedef struct {
     uint64_t mapping_addr; //映射起始地址
@@ -52,10 +53,16 @@ typedef struct {
 
 } Elf64_Meg;
 
+typedef struct {
+    uint32_t mmap_size;
+    memory_map_t mmap[128];
+
+} kernel_hold_mem_t;
 
 typedef struct {
     Elf64_Meg boot;
     Elf64_Meg kernel; //内核所用的空间
+    kernel_hold_mem_t kernel_hold_mem;
 } boot_params_t;
 
 
@@ -66,5 +73,5 @@ typedef struct {
 
 
 void cut64(boot_params_t *boot_params);
-
+void load_mem(kernel_hold_mem_t *hold_mem, multiboot_info_t *multiboot_info);
 #endif //LIYUX_OS_KMEM_H

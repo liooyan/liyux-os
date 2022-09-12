@@ -9,7 +9,7 @@ typedef unsigned int multiboot_uint32_t;
 typedef unsigned long long multiboot_uint64_t;
 
 #define MULTIBOOT_INFO_MODS                     0x00000008
-
+#include "stdint.h"
 struct multiboot_symbol_table {
     multiboot_uint32_t tabsize;
     multiboot_uint32_t strsize;
@@ -118,4 +118,18 @@ struct multiboot_mod_list
 };
 typedef struct multiboot_mod_list multiboot_module_t;
 
+
+
+/* 内存分布。小心，偏移量 0 是 base_addr_low 而不是 size 。 */
+typedef struct memory_map
+{
+    uint32_t size;
+    uint32_t base_addr_low;
+    uint32_t base_addr_high;
+    uint32_t length_low;
+    uint32_t length_high;
+    uint32_t type;
+} memory_map_t;
+
+typedef struct multiboot_mod_list multiboot_module_t;
 #endif

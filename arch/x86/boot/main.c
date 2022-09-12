@@ -21,7 +21,7 @@ void _setup_init(multiboot_info_t *multiboot_info, uint32_t heap_addr) {
     boot_params_t  *boot_params = malloc(sizeof(boot_params_t));
     //加载64位内核代码
      loading_kernel(multiboot_info,boot_params);
-
+    load_mem(&boot_params->kernel_hold_mem,multiboot_info);
     //设在64位相关内容
     cut64( boot_params);
     kprintf("set cpu 64 end,will jump to boot");

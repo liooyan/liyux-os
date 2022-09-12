@@ -7,8 +7,13 @@
 #include "x86/boot/cpu.h"
 #include "tty.h"
 #include "string.h"
+#include "multiboot.h"
+#include "stdio.h"
+
+
 static uint64_t *base_page;
 
+#define CHECK_FLAG(flags, bit)   ((flags) & (1 << (bit)))
 
 static inline void rdmsr() {
     asm volatile ( "movl $0xc0000080, %ecx \n rdmsr \n btsl $8, %eax \nwrmsr");
@@ -138,4 +143,29 @@ void cut64(boot_params_t *boot_params) {
 }
 
 
+void load_mem(kernel_hold_mem_t *hold_mem, multiboot_info_t *multiboot_info) {
+
+
+    if (CHECK_FLAG (multiboot_info->flags, 6)) {
+        memory_map_t *mmap;
+
+        kprintf("mmap_addr = 0x%x, mmap_length = 0x%x\n",
+                (unsigned) multiboot_info->mmap_addr, (unsigned) multiboot_info->mmap_length);
+        hold_mem->mmap_size = 0;
+        for (mmap = (memory_map_t *) multiboot_info->mmap_addr;
+             (unsigned long) mmap < multiboot_info->mmap_addr + multiboot_info->mmap_length;
+             mmap = (memory_map_t *) ((unsigned long) mmap + mmap->size + sizeof(mmap->size))) {
+            kprintf(" size = 0x%x, base_addr = 0x%x%x, length = 0x%x%x, type = 0x%x\n",
+                    (unsigned) mmap->size,
+                    (unsigned) mmap->base_addr_high,
+                    (unsigned) mmap->base_addr_low,
+                    (unsigned) mmap->length_high,
+                    (unsigned) mmap->length_low,
+                    (unsigned) mmap->type);
+            hold_mem->mmap[hold_mem->mmap_size] = *mmap;
+            hold_mem->mmap_size++;
+        }
+    }
+
+}
 
