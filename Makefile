@@ -21,7 +21,7 @@ INCLUDES_SETUP := $(patsubst %, -I%, $(INCLUDES_SETUP_DIR))
 
 linux :clean $(PROJECT_NAME)
 
-all: clean $(TARGET_DIR)/setup.elf
+all: clean $(TARGET_DIR)/boot.elf
 
 
 
@@ -113,9 +113,9 @@ clean :
 
 
 qemu-32 : clean $(PROJECT_NAME)
-	@qemu-system-i386 -cdrom build/iso/liyux-os.iso -s -S
+	@qemu-system-i386 -cdrom build/iso/liyux-os.iso -s -S -nographic
 
 
-qemu-064 : clean $(PROJECT_NAME)
-	@qemu-system-x86_64 -cdrom build/iso/liyux-os.iso -s -S
+qemu-64 : clean $(PROJECT_NAME)
+	@qemu-system-x86_64 -cdrom build/iso/liyux-os.iso -s -S -nographic
 
