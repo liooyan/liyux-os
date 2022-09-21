@@ -10,7 +10,7 @@ SET_UP_LIB_SRC :=  $(patsubst ./%, $(OBJECT_DIR)/%_i686.o, $(call SCAN_SRC,./arc
 
 
 BOOT_SRC := $(patsubst ./%, $(OBJECT_DIR)/%_x86_64.o, $(call SCAN_SRC,./boot))
-
+MM_SRC := $(patsubst ./%, $(OBJECT_DIR)/%_x86_64.o, $(call SCAN_SRC,./mm))
 #内核的依赖
 INCLUDES := $(patsubst %, -I%, $(INCLUDES_DIR))
 
@@ -74,9 +74,9 @@ $(TARGET_DIR)/kernel.elf: $(OBJECT_DIR) $(TARGET_DIR) $(ISO_GRUB_DIR) $(INIT_SRC
 
 
 # 编译内核文件
-$(TARGET_DIR)/boot.elf: $(BOOT_SRC)
+$(TARGET_DIR)/boot.elf: $(BOOT_SRC) $(MM_SRC)
 	@echo " LINK: $(TARGET_DIR)/boot.elf"
-	$(CC_x86_64)  -T boot/boot.ld -o $(TARGET_DIR)/boot.elf $(BOOT_SRC) $(LDFLAGS)
+	$(CC_x86_64)  -T boot/boot.ld -o $(TARGET_DIR)/boot.elf $(BOOT_SRC) $(MM_SRC) $(LDFLAGS)
 
 
 
@@ -113,9 +113,9 @@ clean :
 
 
 qemu-32 : clean $(PROJECT_NAME)
-	@qemu-system-i386 -cdrom build/iso/liyux-os.iso -s -S -nographic
+	@qemu-system-i386 -cdrom build/iso/liyux-os.iso -s -S
 
 
 qemu-64 : clean $(PROJECT_NAME)
-	@qemu-system-x86_64 -cdrom build/iso/liyux-os.iso -s -S -nographic
+	@qemu-system-x86_64 -cdrom build/iso/liyux-os.iso -s -S
 
