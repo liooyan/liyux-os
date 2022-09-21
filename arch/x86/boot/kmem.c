@@ -77,7 +77,7 @@ static void set_page(Addr_section *addrSection) {
                 if (leve == 3) {
                     break;
                 }
-                page_index_bash = MEM_GET_PAGE_ADDR((uint64_t) *page_index_bash);
+                page_index_bash = MEM_GET_PAGE_ADDR((uint64_t) *page_index);
             }
         }
 
