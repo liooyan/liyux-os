@@ -6,28 +6,29 @@ SECTIONS {
 
     . = 0xc8000000;
 
-    .text BLOCK(4K) :  {
+    .text  :  {
       *.o (.text)
-      . = ALIGN(4K);
     }
-    .usrtext BLOCK(4K) :  {
+
+    .init.data  :  {
+       *.o  (.init.data)
+    }
+
+
+    .usrtext  :  {
        *.o  (.usrtext)
-          . = ALIGN(4K);
     }
 
-    .bss BLOCK(4K) :  {
+    .bss  :  {
         *.o  (.bss)
-           . = ALIGN(4K);
     }
 
-    .data BLOCK(4k) : {
+    .data : {
        *.o  (.data)
-          . = ALIGN(4K);
     }
 
-    .rodata BLOCK(4K) : {
+    .rodata : {
         *.o  (.rodata)
-           . = ALIGN(4K);
     }
 
     __upset_end = ALIGN(4K);
