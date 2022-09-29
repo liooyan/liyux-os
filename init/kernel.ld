@@ -4,7 +4,7 @@ ENTRY(main)
 
 SECTIONS {
 
-    . = 0xffffffc8000000;
+    . = 0xffffffff80000000;
 
     .text BLOCK(4K) :  {
       *.o (.text)

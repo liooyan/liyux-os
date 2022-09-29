@@ -61,6 +61,30 @@ void init_data_registere(Elf64_Meg *boot) {
     }
 }
 
+void kernel_mm_registere(Elf64_Meg *boot) {
+
+    uint64_t max_end_addr = 0;
+    uint64_t min_start_addr = 0xffffffffffff;
+    for (int i = 0; i < 50; i++) {
+        Addr_section *addrSection = &boot->addr_section[i];
+        if (addrSection->start_addr == 0) {
+            continue;
+        }
+        uint64_t end_addr = addrSection->start_addr + addrSection->addr_size;
+        if (max_end_addr < end_addr) {
+            max_end_addr = end_addr;
+        }
+        if (min_start_addr > addrSection->start_addr) {
+            min_start_addr = end_addr;
+        }
+    }
+    struct early_res *free_early_res = find_free_early_res();
+    free_early_res->start = min_start_addr;
+    free_early_res->end = max_end_addr;
+    free_early_res->overlap_ok = 1;
+    strcopy(".kernel", free_early_res->name);
+}
+
 void gdt_registere(Addr_section *addrSection) {
 
     struct early_res *free_early_res = find_free_early_res();
@@ -105,30 +129,6 @@ int streq(const char *source, const char *target) {
 
 }
 
-void mv_kernel(boot_params_t *boot_params) {
-    Elf64_Meg *kernel_elf = &boot_params->kernel;
-    uint64_t max_end_addr = 0;
-    uint64_t min_start_addr = 0xffffffffffff;
-    for (int i = 0; i < 50; i++) {
-        Addr_section *addrSection = &kernel_elf->addr_section[i];
-        if (addrSection->start_addr == 0) {
-            continue;
-        }
-        uint64_t end_addr = addrSection->start_addr + addrSection->addr_size;
-        if (max_end_addr < end_addr) {
-            max_end_addr = end_addr;
-        }
-        if (min_start_addr > addrSection->start_addr) {
-            min_start_addr = end_addr;
-        }
-    }
-    char *kernel_start_addr = 0x200000;
-    char *kernel_source_addr = min_start_addr;
-    for (int i =0; i < max_end_addr - min_start_addr; i++) {
-        kernel_start_addr[i] =kernel_source_addr[i];
-    }
-
-}
 
 //
 // Created by Administrator on 2022/8/15.
@@ -136,10 +136,10 @@ void mv_kernel(boot_params_t *boot_params) {
 int main(boot_params_t *boot_params) {
     boot_params_c = *boot_params;
     init_data_registere(&boot_params_c.boot);
+    kernel_mm_registere(&boot_params_c.kernel);
     gdt_registere(&boot_params_c.gdt_addr);
     pge_base_registere();
     init_boot_mm(&boot_params_c);
-    mv_kernel(&boot_params_c);
 
 
     unsigned char name[17];
