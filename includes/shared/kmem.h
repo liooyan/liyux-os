@@ -62,7 +62,8 @@ typedef struct {
 typedef struct {
     Elf64_Meg boot;
     Elf64_Meg kernel; //内核所用的空间
-    kernel_hold_mem_t kernel_hold_mem;
+    Addr_section gdt_addr;
+    kernel_hold_mem_t kernel_hold_mem;//物理地址
 } boot_params_t;
 
 

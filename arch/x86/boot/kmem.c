@@ -23,11 +23,11 @@ static inline void rdmsr() {
  * 设在临时的64位堆内存，设置2两个4G的内存
  * @param hold_mem
  */
-static void set_gdt() {
+static void set_gdt(boot_params_t *boot_params) {
 
     int gdt_len = 4;
 
-    uint64_t *gdt = malloc(sizeof(uint64_t) * gdt_len);
+    uint64_t *gdt = malloc_4k(sizeof(uint64_t) * gdt_len);
     //设在3个段
     gdt[0] = 0x0000000000000000;
     gdt[1] = 0x00af9a000000ffff; //code
@@ -37,6 +37,8 @@ static void set_gdt() {
     gdt_index.gdt = gdt;
     cpu_lgdt((uint32_t *) &gdt_index);
 
+    boot_params->gdt_addr.addr_size = 4096;
+    boot_params->gdt_addr.start_addr = (uint32_t) gdt;
 }
 
 
@@ -103,10 +105,19 @@ static void set_mem_page(boot_params_t *boot_arams) {
         Addr_section *addrSection = kernel_info->addr_section + i;
         if (addrSection->addr_size > 0 && addrSection->mapping_addr > 0) {
             set_page(addrSection);
+
+        }
+    }
+
+    //物理地址
+    kernel_hold_mem_t *kernel_hold_mem = &boot_arams->kernel_hold_mem;
+    for (int i = 0; i < kernel_hold_mem->mmap_size; ++i) {
+        memory_map_t  *memory_map=  &kernel_hold_mem->mmap[i];
+        if(memory_map->type == 1 && memory_map->base_addr_high == 0){
             Addr_section oldAddrSection = {
-                    .mapping_addr = addrSection->start_addr,
-                    .addr_size = addrSection->addr_size,
-                    .start_addr = addrSection->start_addr
+                    .mapping_addr = memory_map->base_addr_low,
+                    .addr_size =  memory_map->length_low,
+                    .start_addr =  memory_map->base_addr_low,
             };
             set_page(&oldAddrSection);
         }
@@ -133,7 +144,7 @@ void cut64(boot_params_t *boot_params) {
     uint32_t cr4 = cpu_rcr4();
     cpu_lcr4(X86_CR4_PAE | cr4);
 
-    set_gdt(); //设置64位的段
+    set_gdt(boot_params); //设置64位的段
     set_mem_page(boot_params);//设置4段的分页
     rdmsr();
     unsigned int cr0 = cpu_rcr0();

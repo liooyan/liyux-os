@@ -29,7 +29,7 @@ SECTIONS {
        *.o  (.data)
           . = ALIGN(4K);
     }
-
+    . = 0x200000;
     .rodata BLOCK(4K) : {
         *.o  (.rodata)
            . = ALIGN(4K);
