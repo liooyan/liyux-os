@@ -19,6 +19,7 @@ uint64_t boot_mm_start_addr;
 static struct early_res early_res_x[MAX_EARLY_RES_X] __initdata;
 boot_params_t boot_params_c __initdata;
 boot_params_t *boot_params_c_x = &boot_params_c;
+uint64_t initdata_addr;
 
 struct early_res *early_res = &early_res_x[0];
 
@@ -57,11 +58,13 @@ void init_data_registere(Elf64_Meg *boot) {
     for (int i = 0; i < 50; i++) {
         Addr_section *addrSection = &boot->addr_section[i];
         if (streq(".init.data", addrSection->name)) {
+
             struct early_res *free_early_res = find_free_early_res();
             free_early_res->start = addrSection->start_addr;
             free_early_res->end = addrSection->start_addr + addrSection->addr_size;
             free_early_res->overlap_ok = 0;
             strcopy(".init.data", free_early_res->name);
+            initdata_addr = addrSection->mapping_addr-free_early_res->start;
             break;
         }
     }
@@ -192,8 +195,11 @@ void *boot_malloc(uint64_t  size){
 void jmp_kernel(){
     uint64_t  addr = 0xffffffff80000000;
     uint64_t *ad = &addr;
-    asm volatile("call *%0" : :
-            "m" (addr));
+    asm volatile(
+                 "call *%0" : :
+            "m" (addr),
+            "a"((uint64_t )boot_params_c_x-initdata_addr+PHYSICAL_MEMORY),
+            "b"((uint64_t )early_res-initdata_addr+PHYSICAL_MEMORY));
 }
 
 static void set_page(Addr_section_64 *addrSection) {

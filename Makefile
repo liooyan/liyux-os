@@ -21,7 +21,7 @@ INCLUDES_SETUP := $(patsubst %, -I%, $(INCLUDES_SETUP_DIR))
 
 linux :clean $(PROJECT_NAME)
 
-all: clean $(TARGET_DIR)/boot.elf
+all: clean $(TARGET_DIR)/kernel.elf
 
 
 

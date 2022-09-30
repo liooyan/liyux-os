@@ -4,14 +4,8 @@
 .section .text
     .global _start
     _start:
-        /* 更新 CS:EIP */
-        movw $BOOT_GDT_DATA, %cx
-        movw %cx, %es
-        movw %cx, %ds
-        movw %cx, %fs
-        movw %cx, %gs
-        movw %cx, %ss
         movq %rax,%rdi
+        movq %rbx,%rsi
         call main
     1:
         hlt
