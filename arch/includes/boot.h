@@ -12,7 +12,7 @@
 
 
 #define  STACK_SIZE 16318 * 2
-#define  HEAP_SIZE 4096*30
+#define  HEAP_SIZE 4096*200
 
 
 #define BOOT_GDT_CODE 0x08
