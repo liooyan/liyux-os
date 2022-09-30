@@ -3,8 +3,8 @@
 //
 // Created by Administrator on 2022/8/15.
 //
-int main(boot_params_t *boot_params){
+int main(){
 
-    return  boot_params->kernel.start_addr;
+    return  1;
 }
 

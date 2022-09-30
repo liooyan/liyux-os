@@ -76,7 +76,7 @@ $(TARGET_DIR)/kernel.elf: $(OBJECT_DIR) $(TARGET_DIR) $(ISO_GRUB_DIR) $(INIT_SRC
 # 编译内核文件
 $(TARGET_DIR)/boot.elf: $(BOOT_SRC) $(MM_SRC)
 	@echo " LINK: $(TARGET_DIR)/boot.elf"
-	$(CC_x86_64)  -T boot/boot.ld -o $(TARGET_DIR)/boot.elf $(BOOT_SRC) $(MM_SRC) $(LDFLAGS)
+	$(CC_x86_64)  -T boot/boot.ld -o $(TARGET_DIR)/boot.elf $(BOOT_SRC) $(MM_SRC) $(LDFLAGS) -mcmodel=medium
 
 
 
@@ -113,9 +113,9 @@ clean :
 
 
 qemu-32 : clean $(PROJECT_NAME)
-	@qemu-system-i386 -cdrom build/iso/liyux-os.iso -s -S
+	@qemu-system-i386 -cdrom build/iso/liyux-os.iso 	 -s -S -nographic
 
 
 qemu-64 : clean $(PROJECT_NAME)
-	@qemu-system-x86_64 -cdrom build/iso/liyux-os.iso -s -S
+	@qemu-system-x86_64 -cdrom build/iso/liyux-os.iso 	 -s -S
 

@@ -47,6 +47,13 @@ typedef struct {
 } Addr_section;
 
 typedef struct {
+    uint64_t mapping_addr; //映射起始地址
+    uint64_t start_addr; //当前段的物理起始地址
+    uint32_t addr_size; //当前段的物理结束地址
+    char name[15];
+} Addr_section_64;
+
+typedef struct {
     uint64_t start_addr; //代码入库地址
     uint64_t elf_hdr_table_num;
     Addr_section addr_section[50];
