@@ -2,7 +2,6 @@
 #include <boot.h>
 
 #define MB_FLAGS    MULTIBOOT_MEMORY_INFO | MULTIBOOT_PAGE_ALIGN
-#define KPG_SIZE    10*4096
 
 .section .multiboot
     .long MULTIBOOT_MAGIC
@@ -25,9 +24,29 @@
 
         movl $stack_top, %esp
         pushl %ebx
+        call _set_gdt # 进入main方法
         call _setup_init # 进入main方法
 
     1:
         hlt
             jmp 1b
+
+##保护模式内存
+        _set_gdt :
+            call _init_gdt
+            /* 更新段寄存器 */
+            movw $BOOT_GDT_DATA, %cx
+            movw %cx, %es
+            movw %cx, %ds
+            movw %cx, %fs
+            movw %cx, %gs
+            movw %cx, %ss
+
+            /* 更新 CS:EIP */
+            subl $8, %esp
+            movw $BOOT_GDT_CODE,4(%esp)
+            movl $_after_set_gdt,(%esp)
+            retf
+        _after_set_gdt:
+            ret
 

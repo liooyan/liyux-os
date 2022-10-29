@@ -9,5 +9,7 @@
 #include "multiboot.h"
 
 int32_t _setup_init(multiboot_info_t *multiboot_info) {
+
+
     return multiboot_info;
 }
