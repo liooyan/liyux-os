@@ -9,31 +9,10 @@ ISO_BOOT_DIR := ${ISO_DIR}/boot
 ISO_GRUB_DIR := ${ISO_BOOT_DIR}/grub
 
 
-CORE_TYPE =  x86
-CORE_BASH_PATH =  arch/${CORE_TYPE}
-
 
 INCLUDES_DIR := includes
 
 
-INCLUDES_SHARED_DIR := includes/shared
 INCLUDES_SETUP_DIR := arch/includes
 
 
-
-
-
-QEMU_MON_PORT := 45454
-
-## qemu-img convert -O vdi /data/source.vhdx /data/output.vdi
-
-
-QEMU_OPTIONS := -rtc base=utc \
-				-no-reboot \
-				-machine q35 \
-				-no-shutdown \
-				-d cpu_reset \
-				-d trace:ide_dma_cb \
-				-drive id=disk,file="C:\Users\Administrator\Desktop\liyan.vdi",if=none \
-				-device ahci,id=ahci \
-				-device ide-hd,drive=disk,bus=ahci.0

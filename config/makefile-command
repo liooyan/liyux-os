@@ -5,9 +5,6 @@ ifeq ($(OS),Windows_NT)
   CC_i686 := gcc
   AS_i686 := as
 
-  CC_x86_64 := gcc
-  AS_x86_64 := as
-
 else
 
 # Linux 环境下的变量
@@ -16,8 +13,6 @@ else
   CC_i686 := i686-elf-gcc
   AS_i686 := i686-elf-as
 
-  CC_x86_64 := x86_64-elf-gcc
-  AS_x86_64 := x86_64-elf-as
 
 
  endif

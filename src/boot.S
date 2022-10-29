@@ -17,11 +17,6 @@
         .skip STACK_SIZE, 0
     stack_top:
 
-.section .setup_heap
-    heap_start:
-        .skip HEAP_SIZE, 0
-
-
 .section .text
     .global _start
     _start:
@@ -29,7 +24,6 @@
         cli
 
         movl $stack_top, %esp
-        pushl $heap_start
         pushl %ebx
         call _setup_init # 进入main方法
 
