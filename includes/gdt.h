@@ -64,6 +64,11 @@
 #define TSS_R3_TYPE         (TYPE_TSS | SET_S(0) | SET_DPL(3) | SET_P(1))
 #define TSS_R0_TYPE         (TYPE_TSS | SET_S(0) | SET_DPL(0) | SET_P(1))
 
+
+
+#define BOOT_GDT_CODE 0x08
+#define BOOT_GDT_DATA 0x10
+
 typedef struct  {
     u16 offset_1;        // 低16位偏移地址
     u16 base_address_1;        //低16位基地址
