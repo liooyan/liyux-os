@@ -61,7 +61,8 @@ clean :
 
 
 qemu-32 : clean $(PROJECT_NAME)
-	@qemu-system-i386 -cdrom build/iso/liyux-os.iso -s -S  -monitor stdio -d int
+	@qemu-system-i386 -cdrom build/iso/liyux-os.iso -s -S  \
+	# -monitor stdio -D /root/trace -d cpu_reset
 
 
 

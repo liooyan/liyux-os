@@ -62,6 +62,7 @@
 
 #define GDT_TSS_ATTR        SET_AVL(0) | SET_L(0) | SET_DB(0) |   SET_G(1)
 #define TSS_R3_TYPE         (TYPE_TSS | SET_S(0) | SET_DPL(3) | SET_P(1))
+#define TSS_R0_TYPE         (TYPE_TSS | SET_S(0) | SET_DPL(0) | SET_P(1))
 
 typedef struct  {
     u16 offset_1;        // 低16位偏移地址
@@ -134,6 +135,7 @@ typedef struct  {
     u16 keep_10;
     u16 ldt;
     u16 keep_11;
+    u16 keep_12;
     u16 io_map;
 } tss_t;
 

@@ -17,7 +17,7 @@
     stack_top:
 
 .section .text
-    .global _start
+    .global _start,_work_to
     _start:
     /*关闭中断*/
         cli
@@ -44,7 +44,9 @@
             /* 更新 CS:EIP */
             ljmp $BOOT_GDT_CODE,$_after_set_gdt
         _after_set_gdt:
-            lcall $0x0028 ,$0
-
+            lcall $0x002b ,$0
             ret
-
+        _work_to:
+            movw $BOOT_GDT_DATA, %cx
+            call _setup_init # 进入main方法
+            retf
