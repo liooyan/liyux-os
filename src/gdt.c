@@ -11,9 +11,9 @@
 u32 _setup_init(multiboot_info_t *multiboot_info);
 
 #define GDT_ENTRY 20
-u16 selector = 0x08;
 
 gdt_t _gdt[GDT_ENTRY];
+tss_t def_tss;
 
 void set_gdt_entry(u32 index, u32 base, u32 limit, u8 avl_attr, u8 type_dpl) {
     gdt_t *gdtDescriptor = &_gdt[index];
@@ -32,9 +32,6 @@ void set_call_entry(u32 index, u32 address, u16 selector,u8 dpl) {
     callDescriptor->call_descriptor.selector = selector;
     callDescriptor->call_descriptor.selector = selector;
     callDescriptor->call_descriptor.attr = 0B1100  | ((dpl & 0B11) << 5 ) |( 1 << 7);
-
-
-
 }
 
 
@@ -46,13 +43,28 @@ void load_gdt() {
     cpu_lgdt((u32 *) &gdt_index);
 }
 
+void set_tss() {
+    def_tss.cs = 0x1B;
+    def_tss.ss = 0x23;
+    def_tss.es = 0x23;
+    def_tss.ds = 0x23;
+    def_tss.fs = 0x23;
+    def_tss.gs = 0x23;
+    def_tss.ss = 0x23;
+    def_tss.ss = 0x23;
+    def_tss.eip = (u32)&_setup_init;
+
+
+}
+
 void _init_gdt() {
+    set_tss();
     set_gdt_entry(0, 0, 0, 0, 0);
     set_gdt_entry(1, 0, 0xfffff, GDT_DEF_ATTR, GDT_R0_CODE);
     set_gdt_entry(2, 0, 0xfffff, GDT_DEF_ATTR, GDT_R0_DATA);
     set_gdt_entry(3, 0, 0xfffff, GDT_DEF_ATTR, GDT_R3_CODE);
     set_gdt_entry(4, 0, 0xfffff, GDT_DEF_ATTR, GDT_R3_DATA);
-    set_call_entry(5, (u32) &_setup_init, 0x1b, 0);
+    set_gdt_entry(5, (u32) &def_tss, sizeof(def_tss), GDT_TSS_ATTR, TSS_R3_TYPE);
     load_gdt();
 
 }

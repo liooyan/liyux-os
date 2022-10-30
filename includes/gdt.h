@@ -50,6 +50,7 @@
 #define TYPE_CODE_EXRDC      0x0E // Execute/Read, conforming
 #define TYPE_CODE_EXRDCA     0x0F // Execute/Read, conforming, accessed
 
+#define TYPE_TSS     0B1001 //
 
 #define GDT_R0_CODE         (TYPE_CODE_EXRD | SET_S(1) | SET_DPL(0) | SET_P(1))
 #define GDT_R3_CODE         (TYPE_CODE_EXRD | SET_S(1) | SET_DPL(3) | SET_P(1))
@@ -58,6 +59,9 @@
 #define GDT_R3_DATA         (TYPE_DATA_RDWR | SET_S(1) | SET_DPL(3) | SET_P(1))
 
 #define GDT_DEF_ATTR        SET_AVL(0) | SET_L(0) | SET_DB(1) |   SET_G(1)
+
+#define GDT_TSS_ATTR        SET_AVL(0) | SET_L(0) | SET_DB(0) |   SET_G(1)
+#define TSS_R3_TYPE         (TYPE_TSS | SET_S(0) | SET_DPL(3) | SET_P(1))
 
 typedef struct  {
     u16 offset_1;        // 低16位偏移地址
@@ -87,7 +91,7 @@ typedef union {
 
 typedef struct {
     u16 _gdt_limit;
-    gdt_descriptor_t *gdt;
+    gdt_t *gdt;
 } __attribute__((packed)) gdt_index_t;
 
 
@@ -98,11 +102,14 @@ typedef struct  {
     u32 esp0;
     u16 ss0;
     u16 keep_2;
+    u32 esp1;
     u16 ss1;
     u16 keep_3;
+    u32 esp2;
     u16 ss2;
     u16 keep_4;
     u32 cr3;
+
     u32 eip;
     u32 eflags;
     u32 eax;

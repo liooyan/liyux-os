@@ -44,5 +44,7 @@
             /* 更新 CS:EIP */
             ljmp $BOOT_GDT_CODE,$_after_set_gdt
         _after_set_gdt:
+            lcall $0x0028 ,$0
+
             ret
 
