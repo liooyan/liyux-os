@@ -41,12 +41,8 @@
             movw %cx, %fs
             movw %cx, %gs
             movw %cx, %ss
-
             /* 更新 CS:EIP */
-            subl $8, %esp
-            movw $BOOT_GDT_CODE,4(%esp)
-            movl $_after_set_gdt,(%esp)
-            retf
+            ljmp $BOOT_GDT_CODE , $_after_set_gdt
         _after_set_gdt:
             ret
 

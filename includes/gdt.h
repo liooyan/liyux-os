@@ -14,6 +14,13 @@
 #define GET_BASE_H(x)            (x & 0xff000000 >> 24)
 #define GET_BASE(h,m,l)            (( h<< 24) |( m << 16) | l)
 
+
+
+#define GET_CALL_BASE_L(x)           ((x & 0x0000ffff))
+#define GET_CALL_BASE_H(x)           ((x & 0xffff0000) >> 16)
+
+
+
 // 设置不同位上的值
 #define SET_S(x) (x << 4)
 #define SET_DPL(x) (x << 5)
@@ -45,8 +52,10 @@
 
 
 #define GDT_R0_CODE         (TYPE_CODE_EXRD | SET_S(1) | SET_DPL(0) | SET_P(1))
+#define GDT_R3_CODE         (TYPE_CODE_EXRD | SET_S(1) | SET_DPL(3) | SET_P(1))
 
 #define GDT_R0_DATA         (TYPE_DATA_RDWR | SET_S(1) | SET_DPL(0) | SET_P(1))
+#define GDT_R3_DATA         (TYPE_DATA_RDWR | SET_S(1) | SET_DPL(3) | SET_P(1))
 
 #define GDT_DEF_ATTR        SET_AVL(0) | SET_L(0) | SET_DB(1) |   SET_G(1)
 
@@ -60,10 +69,68 @@ typedef struct  {
 } gdt_descriptor_t;
 
 
+typedef struct  {
+    u16 offset_1;        // 低16位偏移地址
+    u16 selector;        //低16位基地址
+    u8 param_count;   //中8位基地址
+    u8 attr;         //定义高32位中，8-15位的信息
+    u16 offset_2;        //高8位基地址
+} call_descriptor_t;
+
+
+typedef union {
+    gdt_descriptor_t gdt_descriptor;
+    call_descriptor_t call_descriptor;
+} gdt_t;
+
+
+
 typedef struct {
     u16 _gdt_limit;
     gdt_descriptor_t *gdt;
 } __attribute__((packed)) gdt_index_t;
+
+
+
+typedef struct  {
+    u16 last_tss;
+    u16 keep_1;
+    u32 esp0;
+    u16 ss0;
+    u16 keep_2;
+    u16 ss1;
+    u16 keep_3;
+    u16 ss2;
+    u16 keep_4;
+    u32 cr3;
+    u32 eip;
+    u32 eflags;
+    u32 eax;
+    u32 ecx;
+    u32 edx;
+    u32 ebx;
+    u32 esp;
+    u32 ebp;
+    u32 esi;
+    u32 edi;
+    u16 es;
+    u16 keep_5;
+    u16 cs;
+    u16 keep_6;
+    u16 ss;
+    u16 keep_7;
+    u16 ds;
+    u16 keep_8;
+    u16 fs;
+    u16 keep_9;
+    u16 gs;
+    u16 keep_10;
+    u16 ldt;
+    u16 keep_11;
+    u16 io_map;
+} tss_t;
+
+
 
 
 

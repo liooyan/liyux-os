@@ -53,13 +53,15 @@ $(PROJECT_NAME) :  $(TARGET_DIR)/setup.elf
 	@grub-mkrescue -o $(ISO_DIR)/$(PROJECT_NAME).iso $(ISO_DIR)
 
 
+bochs_debug: clean $(PROJECT_NAME)
+	@bochs -q -f ./bochs/bochs_debug.cfg
 
 clean :
 	@rm -rf $(BUILD_DIR)
 
 
 qemu-32 : clean $(PROJECT_NAME)
-	@qemu-system-i386 -cdrom build/iso/liyux-os.iso -s -S
+	@qemu-system-i386 -cdrom build/iso/liyux-os.iso -s -S  -monitor stdio -d int
 
 
 

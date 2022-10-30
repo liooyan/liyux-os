@@ -17,4 +17,7 @@
 #define BOOT_GDT_CODE 0x08
 #define BOOT_GDT_DATA 0x10
 
+#define BOOT_R3_GDT_CODE 0x0B
+#define BOOT_R3_GDT_DATA 0x13
+
 #endif
