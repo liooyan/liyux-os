@@ -9,12 +9,14 @@
 #include "multiboot.h"
 
 void _work_to();
+void _work_to2();
 
 #define GDT_ENTRY 20
 
 gdt_t _gdt[GDT_ENTRY];
 u8 esp[1000];
 tss_t def_tss;
+tss_t def_tss_2;
 
 void set_gdt_entry(u32 index, u32 base, u32 limit, u8 avl_attr, u8 type_dpl) {
     gdt_t *gdtDescriptor = &_gdt[index];
@@ -55,7 +57,8 @@ void set_tss() {
     def_tss.ss = 0x23;
     def_tss.eip = (u32)&_work_to;
     def_tss.esp = ((u32)&esp)+ sizeof(esp);
-    def_tss.last_tss = 0x30;
+    def_tss_2 = def_tss;
+    def_tss_2.eip = (u32)&_work_to2;
 }
 
 void _init_gdt() {
@@ -66,7 +69,7 @@ void _init_gdt() {
     set_gdt_entry(3, 0, 0xfffff, GDT_DEF_ATTR, GDT_R3_CODE);
     set_gdt_entry(4, 0, 0xfffff, GDT_DEF_ATTR, GDT_R3_DATA);
     set_gdt_entry(5, (u32) &def_tss, sizeof(tss_t)-1, GDT_TSS_ATTR, TSS_R3_TYPE);
-    set_gdt_entry(6, 0, sizeof(tss_t)-1, GDT_TSS_ATTR, TSS_R0_TYPE);
+    set_gdt_entry(6, (u32) &def_tss_2, sizeof(tss_t)-1, GDT_TSS_ATTR, TSS_R3_TYPE);
     load_gdt();
 
 }

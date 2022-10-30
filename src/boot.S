@@ -17,7 +17,7 @@
     stack_top:
 
 .section .text
-    .global _start,_work_to
+    .global _start,_work_to,_work_to2
     _start:
     /*关闭中断*/
         cli
@@ -47,6 +47,9 @@
             lcall $0x002b ,$0
             ret
         _work_to:
-            movw $BOOT_GDT_DATA, %cx
             call _setup_init # 进入main方法
-            retf
+            lcall $0x0030 ,$0
+            iret
+        _work_to2:
+            call _setup_init # 进入main方法
+            iret

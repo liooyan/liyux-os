@@ -11,7 +11,7 @@
 #define GET_LIM_H(x)            (x & 0xf0000 >> 16)
 #define GET_BASE_L(x)           ((x & 0x0000ffff))
 #define GET_BASE_M(x)           ((x & 0x00ff0000) >> 16)
-#define GET_BASE_H(x)            (x & 0xff000000 >> 24)
+#define GET_BASE_H(x)            ((x & 0xff000000) >> 24)
 #define GET_BASE(h,m,l)            (( h<< 24) |( m << 16) | l)
 
 
