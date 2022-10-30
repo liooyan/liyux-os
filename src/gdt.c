@@ -11,6 +11,7 @@
 u32 _setup_init(multiboot_info_t *multiboot_info);
 
 #define GDT_ENTRY 20
+u16 selector = 0x08;
 
 gdt_t _gdt[GDT_ENTRY];
 
@@ -50,7 +51,7 @@ void _init_gdt() {
     set_gdt_entry(1, 0, 0xfffff, GDT_DEF_ATTR, GDT_R0_CODE);
     set_gdt_entry(2, 0, 0xfffff, GDT_DEF_ATTR, GDT_R0_DATA);
     set_gdt_entry(3, 0, 0xfffff, GDT_DEF_ATTR, GDT_R3_CODE);
-    set_gdt_entry(4, 0, 0xfffff, GDT_DEF_ATTR, GDT_R3_CODE);
+    set_gdt_entry(4, 0, 0xfffff, GDT_DEF_ATTR, GDT_R3_DATA);
     set_call_entry(5, (u32) &_setup_init, 0x1b, 0);
     load_gdt();
 

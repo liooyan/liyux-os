@@ -42,7 +42,7 @@
             movw %cx, %gs
             movw %cx, %ss
             /* 更新 CS:EIP */
-            ljmp $BOOT_GDT_CODE , $_after_set_gdt
+            ljmp $BOOT_GDT_CODE,$_after_set_gdt
         _after_set_gdt:
             ret
 
