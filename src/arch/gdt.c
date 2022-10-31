@@ -3,24 +3,26 @@
 //
 
 
-#include "gdt.h"
+#include "arch/gdt.h"
 #include "lib/int_ll32.h"
-#include "cpu.h"
-#include "multiboot.h"
-
+#include "arch/cpu.h"
+#include "arch/tss.h"
 
 #define GDT_ENTRY 20
 
 gdt_t _gdt[GDT_ENTRY];
 
-
+u32 gdt_use_num = 0;
 
 tss_t base_tss;
-void _setup_init();
-extern u32 *stack_top;
+
+void _start_kernel();
+
+//正式使用的栈空间
+u32 stack[1024];
 
 
-void set_gdt_entry(u32 index, u32 base, u32 limit, u8 avl_attr, u8 type_dpl) {
+static void set_gdt_entry(u32 index, u32 base, u32 limit, u8 avl_attr, u8 type_dpl) {
     gdt_t *gdtDescriptor = &_gdt[index];
     gdtDescriptor->gdt_descriptor.base_address_1 = GET_BASE_L(base);
     gdtDescriptor->gdt_descriptor.base_address_2 = GET_BASE_M(base);
@@ -41,14 +43,14 @@ void set_call_entry(u32 index, u32 address, u16 selector,u8 dpl) {
 
 
 
-void load_gdt() {
+static void load_gdt() {
     gdt_index_t gdt_index;
     gdt_index._gdt_limit = sizeof(_gdt) ;
     gdt_index.gdt = &_gdt[0];
     cpu_lgdt((u32 *) &gdt_index);
 }
 
-void set_tss() {
+static void set_boot_tss() {
     base_tss.cs = BOOT_GDT_CODE;
     base_tss.ss = BOOT_GDT_DATA;
     base_tss.es = BOOT_GDT_DATA;
@@ -57,15 +59,22 @@ void set_tss() {
     base_tss.gs = BOOT_GDT_DATA;
     base_tss.ss = BOOT_GDT_DATA;
     base_tss.ss = BOOT_GDT_DATA;
-    base_tss.eip = (u32)&_setup_init;
-    base_tss.esp = (u32)stack_top;
+    base_tss.eip = (u32)&_start_kernel;
+    base_tss.esp = (u32)stack+ sizeof(stack);
 }
 
 void _init_gdt() {
-    set_tss();
+    set_boot_tss();
     set_gdt_entry(0, 0, 0, 0, 0);
     set_gdt_entry(1, 0, 0xfffff, GDT_DEF_ATTR, GDT_R0_CODE);
     set_gdt_entry(2, 0, 0xfffff, GDT_DEF_ATTR, GDT_R0_DATA);
     set_gdt_entry(3, (u32) &base_tss, sizeof(tss_t)-1, GDT_TSS_ATTR, TSS_R0_TYPE);
+    gdt_use_num = 3;
     load_gdt();
+}
+
+u32 register_gdt_entry(u32 base, u32 limit, u8 avl_attr, u8 type_dpl) {
+    gdt_use_num++;
+    set_gdt_entry(gdt_use_num,base,limit,avl_attr,type_dpl);
+    return gdt_use_num<<3;
 }

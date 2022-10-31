@@ -3,6 +3,8 @@ include config/makefile-config
 
 
 SRC :=  $(patsubst ./%, $(OBJECT_DIR)/%_i686.o, $(call SCAN_SRC,./src))
+TASK1 :=  $(patsubst ./%, $(OBJECT_DIR)/%_i686.o, $(call SCAN_SRC,./task1))
+TASK2 :=  $(patsubst ./%, $(OBJECT_DIR)/%_i686.o, $(call SCAN_SRC,./task2))
 
 
 #内核的依赖
@@ -42,8 +44,6 @@ $(OBJECT_DIR)/%.c_i686.o: %.c
 $(TARGET_DIR)/setup.elf :$(OBJECT_DIR) $(TARGET_DIR) $(ISO_GRUB_DIR) $(SRC)
 	@echo " LINK: $(TARGET_DIR)/setup.elf"
 	$(CC_i686)  -T ./src/setup.ld  -o $(TARGET_DIR)/setup.elf $(SRC)  $(LDFLAGS)
-
-
 
 
 # 使用grub打包

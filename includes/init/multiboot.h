@@ -29,7 +29,7 @@ typedef struct multiboot_elf_section_header_table
         multiboot_elf_section_header_table_t;
 
 
-struct multiboot_info {
+typedef struct  {
     /* Multiboot info version number */
     multiboot_uint32_t flags;
 
@@ -100,8 +100,7 @@ struct multiboot_info {
             multiboot_uint8_t framebuffer_blue_mask_size;
         };
     };
-};
-typedef struct multiboot_info multiboot_info_t;
+}multiboot_info_t;
 
 
 struct multiboot_mod_list
@@ -131,5 +130,6 @@ typedef struct memory_map
     uint32_t type;
 } memory_map_t;
 
-typedef struct multiboot_mod_list multiboot_module_t;
+
+
 #endif

@@ -1,5 +1,5 @@
 #define __ASM__ 1
-#include <boot.h>
+#include <init/boot.h>
 
 #define MB_FLAGS    MULTIBOOT_MEMORY_INFO | MULTIBOOT_PAGE_ALIGN
 
@@ -17,14 +17,18 @@
         .skip STACK_SIZE, 0
     stack_top:
 
+.section .setup_heap
+     heap_start:
+        .skip HEAP_SIZE, 0
 .section .text
-    .global _start,_work_to,_work_to2
+    .global _start
     _start:
     /*关闭中断*/
+        movl $stack_top, %esp
+        pushl $heap_start
+        pushl %ebx
         cli
-        call _init_gdt
-        ljmp $BOOT_TSS_SELECTOR,$0
-
+        call _setup_init
     1:
         hlt
             jmp 1b

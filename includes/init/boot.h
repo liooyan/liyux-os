@@ -11,8 +11,8 @@
 #define MULTIBOOT_MEMORY_INFO                   0x00000002
 
 
-#define  STACK_SIZE 16318 * 2
-
+#define  STACK_SIZE 512
+#define  HEAP_SIZE 4096*200
 
 #define BOOT_TSS_SELECTOR 0x18
 
