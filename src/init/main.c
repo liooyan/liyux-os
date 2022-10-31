@@ -34,6 +34,6 @@ void _setup_init(multiboot_info_t *multiboot_info_parm, uint32_t heap_addr) {
 }
 void _start_kernel() {
     kprintf("this is _start_kernel\n");
-    load_and_run_task((u32)_task1);
+    load_and_run_task_2((u32)_task1);
     load_and_run_task((u32)_task2);
 }
