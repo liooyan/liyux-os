@@ -6,7 +6,7 @@
 #include "arch/tss.h"
 #include "arch/gdt.h"
 #include "lib/int_ll32.h"
-
+#include "lib/stdio.h"
 
 
 void _lcall(u32 selector);
@@ -37,6 +37,7 @@ void load_and_run_task(u32 start_addr) {
      set_tss(&tss, data_selector, code_selector, ss_selector, start_addr, 2048);
     tss_selector = register_gdt_entry((u32) &tss, sizeof(tss_t) - 1, GDT_TSS_ATTR, TSS_R3_TYPE)| 0B11;
     _lcall((u32) tss_selector);
+    kprintf("this task is end\n");
 }
 
 
