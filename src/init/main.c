@@ -16,8 +16,7 @@
 #include "arch/tss.h"
 
 
-int _task1();
-int _task2();
+int _task();
 
 u32 _jump_to_boot();
 multiboot_info_t *multiboot_info;
@@ -34,6 +33,5 @@ void _setup_init(multiboot_info_t *multiboot_info_parm, uint32_t heap_addr) {
 }
 void _start_kernel() {
     kprintf("this is _start_kernel\n");
-    load_and_run_task_2((u32)_task1);
-    load_and_run_task((u32)_task2);
+    load_and_run_task((u32)_task);
 }
