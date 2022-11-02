@@ -13,7 +13,7 @@
 #define GET_BASE_M(x)           ((x & 0x00ff0000) >> 16)
 #define GET_BASE_H(x)            ((x & 0xff000000) >> 24)
 #define GET_BASE(h,m,l)            (( h<< 24) |( m << 16) | l)
-
+#define GET_LIM_ALL(h,l)            (( h<< 16) | l)
 
 
 #define GET_CALL_BASE_L(x)           ((x & 0x0000ffff))
@@ -31,6 +31,8 @@
 #define SET_DB(x) (x << 2)
 #define SET_G(x) (x << 3)
 
+#define GET_DPL(x) ((x >> 5) | 0B11)
+#define GET_DPL(x) ((x >> 5) | 0B11)
 
 //TYPE 的所有枚举
 #define TYPE_DATA_RD         0x00 // Read-Only
@@ -51,6 +53,7 @@
 #define TYPE_CODE_EXRDCA     0x0F // Execute/Read, conforming, accessed
 
 #define TYPE_TSS     0B1001 //
+#define TYPE_LDT     0B0010 //
 
 #define GDT_R0_CODE         (TYPE_CODE_EXRD | SET_S(1) | SET_DPL(0) | SET_P(1))
 #define GDT_R3_CODE         (TYPE_CODE_EXRD | SET_S(1) | SET_DPL(3) | SET_P(1))
@@ -58,12 +61,15 @@
 #define GDT_R0_DATA         (TYPE_DATA_RDWR | SET_S(1) | SET_DPL(0) | SET_P(1))
 #define GDT_R3_DATA         (TYPE_DATA_RDWR | SET_S(1) | SET_DPL(3) | SET_P(1))
 
-#define GDT_DEF_ATTR        SET_AVL(0) | SET_L(0) | SET_DB(1) |   SET_G(1)
 
-#define GDT_TSS_ATTR        SET_AVL(0) | SET_L(0) | SET_DB(0) |   SET_G(1)
+
+
 #define TSS_R3_TYPE         (TYPE_TSS | SET_S(0) | SET_DPL(3) | SET_P(1))
 #define TSS_R0_TYPE         (TYPE_TSS | SET_S(0) | SET_DPL(0) | SET_P(1))
 
+
+#define GDT_DEF_ATTR        SET_AVL(0) | SET_L(0) | SET_DB(1) |   SET_G(1)
+#define GDT_TSS_ATTR        SET_AVL(0) | SET_L(0) | SET_DB(0) |   SET_G(1)
 
 
 #define BOOT_GDT_CODE 0x08
@@ -89,6 +95,7 @@ typedef struct  {
 
 
 typedef union {
+    u32 gdt_u32[2];
     gdt_descriptor_t gdt_descriptor;
     call_descriptor_t call_descriptor;
 } gdt_t;

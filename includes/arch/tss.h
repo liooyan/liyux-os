@@ -50,7 +50,5 @@ typedef struct  {
 } tss_t;
 
 
-void  load_and_run_task(u32 start_addr);
-void  load_and_run_task_2(u32 start_addr);
 
 #endif //LIYUX_OS_TSS_H

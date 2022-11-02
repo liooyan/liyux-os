@@ -14,6 +14,7 @@
 #include "arch/gdt.h"
 #include "lib/elf32.h"
 #include "arch/tss.h"
+#include "kernel/task.h"
 
 
 int _task();
@@ -33,5 +34,7 @@ void _setup_init(multiboot_info_t *multiboot_info_parm, uint32_t heap_addr) {
 }
 void _start_kernel() {
     kprintf("this is _start_kernel\n");
-    load_and_run_task((u32)_task);
+    task_t *task = creat_def_task((u32)_task);
+    task_run(task);
+    kprintf("task is end\n");
 }
