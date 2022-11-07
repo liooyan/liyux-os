@@ -43,11 +43,14 @@ task_t *creat_def_task(u32 start_add) {
     set_tss(&task->tss, data_selector, code_selector, ss_selector, start_add, (u32)&task->stack+task->stack_size,task->ldt_index);
 
     task->tss_selector = register_gdt_entry( (u32) &task->tss, sizeof(tss_t)-1, GDT_TSS_ATTR, TSS_R0_TYPE);
+    task->task_selector = register_task_entry( task->tss_selector );
+
+
     return task;
 
 }
 
 
 void task_run(task_t *task) {
-    _lcall((u32) task->tss_selector);
+    _lcall((u32) task->task_selector);
 }

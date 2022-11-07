@@ -54,6 +54,8 @@
 
 #define TYPE_TSS     0B1001 //
 #define TYPE_LDT     0B0010 //
+#define TYPE_TASK     0B0101 //
+
 
 #define GDT_R0_CODE         (TYPE_CODE_EXRD | SET_S(1) | SET_DPL(0) | SET_P(1))
 #define GDT_R3_CODE         (TYPE_CODE_EXRD | SET_S(1) | SET_DPL(3) | SET_P(1))
@@ -64,9 +66,8 @@
 
 
 
-#define TSS_R3_TYPE         (TYPE_TSS | SET_S(0) | SET_DPL(3) | SET_P(1))
 #define TSS_R0_TYPE         (TYPE_TSS | SET_S(0) | SET_DPL(0) | SET_P(1))
-
+#define TASK_R0_TYPE         (TYPE_TASK | SET_S(0) | SET_DPL(0) | SET_P(1))
 
 #define GDT_DEF_ATTR        SET_AVL(0) | SET_L(0) | SET_DB(1) |   SET_G(1)
 #define GDT_TSS_ATTR        SET_AVL(0) | SET_L(0) | SET_DB(0) |   SET_G(1)
@@ -86,6 +87,14 @@ typedef struct  {
 
 
 typedef struct  {
+    u16 keep_1;        // 空白
+    u16 selector;        //selector
+    u8 keep_2;       //空白
+    u8 attr;         //定义高32位中，8-15位的信息
+    u16 keep_3;        //空白
+} task_descriptor_t;
+
+typedef struct  {
     u16 offset_1;        // 低16位偏移地址
     u16 selector;        //低16位基地址
     u8 param_count;   //中8位基地址
@@ -97,6 +106,7 @@ typedef struct  {
 typedef union {
     u32 gdt_u32[2];
     gdt_descriptor_t gdt_descriptor;
+    task_descriptor_t task_descriptor;
     call_descriptor_t call_descriptor;
 } gdt_t;
 
@@ -117,6 +127,6 @@ void _init_gdt();
 //注册gdt
 u32 register_gdt_entry( u32 base, u32 limit, u8 avl_attr, u8 type_dpl);
 
-
+u32 register_task_entry( u16 tss_selector);
 
 #endif //LIYUX_OS_IDT_H

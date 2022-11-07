@@ -26,6 +26,8 @@ u32 register_ldt_entry( ldt_t *ldt, u32 ldt_size,u32 base, u32 limit, u8 avl_att
 }
 
 
+
+
 u32 find_free_index(ldt_t *ldt, u32 ldt_size){
     for (u32 i = 0; i < ldt_size; ++i){
         ldt_t *ldt_next = ldt+i;

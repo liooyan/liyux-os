@@ -9,6 +9,11 @@
 
 #define LDT_R3_TYPE         (TYPE_LDT | SET_S(0) | SET_DPL(3) | SET_P(1))
 #define LDT_R0_TYPE         (TYPE_LDT | SET_S(0) | SET_DPL(0) | SET_P(1))
+
+
+#define TASK_R3_TYPE         (TYPE_TASK | SET_S(0) | SET_DPL(3) | SET_P(1))
+
+
 #define GDT_LDT_ATTR        SET_AVL(0) | SET_L(0) | SET_DB(0) |   SET_G(0)
 
 
@@ -25,6 +30,7 @@ typedef struct  {
 typedef union {
     u32 ldt_u32[2];
     ldt_descriptor_t ldt_descriptor;
+    task_descriptor_t task_descriptor;
 } ldt_t;
 
 u32 register_ldt_in_gdt(ldt_t *ldt, u32 ldt_size);

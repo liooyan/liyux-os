@@ -42,6 +42,14 @@ void set_call_entry(u32 index, u32 address, u16 selector,u8 dpl) {
 }
 
 
+u32 register_task_entry( u16 tss_selector) {
+    gdt_use_num++;
+    gdt_t *gdtDescriptor = &_gdt[gdt_use_num];
+    gdtDescriptor->task_descriptor.selector = tss_selector;
+    gdtDescriptor->task_descriptor.attr = TASK_R0_TYPE;
+    return  gdt_use_num << 3;
+}
+
 
 static void load_gdt() {
     gdt_index_t gdt_index;

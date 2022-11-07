@@ -17,6 +17,7 @@ typedef struct {
     u16 ldt_size;
     tss_t tss;
     u16 tss_selector;
+    u16 task_selector;
     u8 stack[TASK_STACK_SIZE];
     u32 stack_size;
 
