@@ -31,8 +31,7 @@
 #define SET_DB(x) (x << 2)
 #define SET_G(x) (x << 3)
 
-#define GET_DPL(x) ((x >> 5) | 0B11)
-#define GET_DPL(x) ((x >> 5) | 0B11)
+#define GET_DPL(x) ((x >> 5) & 0B11)
 
 //TYPE 的所有枚举
 #define TYPE_DATA_RD         0x00 // Read-Only

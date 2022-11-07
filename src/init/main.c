@@ -12,14 +12,12 @@
 #include "mm/malloc.h"
 #include "init/boot.h"
 #include "arch/gdt.h"
-#include "lib/elf32.h"
-#include "arch/tss.h"
 #include "kernel/task.h"
-
+#include "arch/idt.h"
 
 int _task();
+void _init_idt();
 
-u32 _jump_to_boot();
 multiboot_info_t *multiboot_info;
 void _setup_init(multiboot_info_t *multiboot_info_parm, uint32_t heap_addr) {
     multiboot_info = multiboot_info_parm;
@@ -28,6 +26,7 @@ void _setup_init(multiboot_info_t *multiboot_info_parm, uint32_t heap_addr) {
     //初始化堆
     heap_init(heap_addr, HEAP_SIZE);
     _init_gdt();
+    _init_idt();
     kprintf("set cpu gdt end,will jump to boot\n");
     asm("ljmp %0,$0" ::"X"(BOOT_TSS_SELECTOR));
     //跳转到内核
@@ -38,3 +37,4 @@ void _start_kernel() {
     task_run(task);
     kprintf("task is end\n");
 }
+
