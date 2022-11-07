@@ -55,7 +55,7 @@
 #define TYPE_TSS     0B1001 //
 #define TYPE_LDT     0B0010 //
 #define TYPE_TASK     0B0101 //
-
+#define TYPE_CALL     0B1100 //
 
 #define GDT_R0_CODE         (TYPE_CODE_EXRD | SET_S(1) | SET_DPL(0) | SET_P(1))
 #define GDT_R3_CODE         (TYPE_CODE_EXRD | SET_S(1) | SET_DPL(3) | SET_P(1))
