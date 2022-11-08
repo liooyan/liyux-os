@@ -2,8 +2,8 @@
 // Created by root on 10/29/22.
 //
 
-#ifndef LIYUX_OS_IDT_H
-#define LIYUX_OS_IDT_H
+#ifndef LIYUX_OS_GDT_H
+#define LIYUX_OS_GDT_H
 #include "lib/int_ll32.h"
 
 // 段基地址与段界限 设置
@@ -128,4 +128,4 @@ u32 register_gdt_entry( u32 base, u32 limit, u8 avl_attr, u8 type_dpl);
 
 u32 register_task_entry( u16 tss_selector);
 
-#endif //LIYUX_OS_IDT_H
+#endif //LIYUX_OS_GDT_H

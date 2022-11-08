@@ -16,7 +16,6 @@
 #include "arch/idt.h"
 
 int _task();
-void _init_idt();
 
 multiboot_info_t *multiboot_info;
 void _setup_init(multiboot_info_t *multiboot_info_parm, uint32_t heap_addr) {
