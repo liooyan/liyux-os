@@ -14,6 +14,7 @@
 #include "arch/gdt.h"
 #include "kernel/task.h"
 #include "arch/idt.h"
+#include "arch/apic.h"
 
 int _task();
 
@@ -26,6 +27,7 @@ void _setup_init(multiboot_info_t *multiboot_info_parm, uint32_t heap_addr) {
     heap_init(heap_addr, HEAP_SIZE);
     _init_gdt();
     _init_idt();
+    _init_apic();
     kprintf("set cpu gdt end,will jump to boot\n");
     asm("ljmp %0,$0" ::"X"(BOOT_TSS_SELECTOR));
     //跳转到内核
