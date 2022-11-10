@@ -6,7 +6,7 @@
 #define LIYUX_OS_INTERRUPTS_H
 
 #define FAULT_DIVISION_ERROR   0
-
+#define TIMER_DIVISION  60
 
 
 

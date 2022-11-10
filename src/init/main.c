@@ -25,9 +25,11 @@ void _setup_init(multiboot_info_t *multiboot_info_parm, uint32_t heap_addr) {
     _init_tty(multiboot_info->framebuffer_width, multiboot_info->framebuffer_height);
     //初始化堆
     heap_init(heap_addr, HEAP_SIZE);
+
     _init_gdt();
     _init_idt();
     _init_apic();
+
     kprintf("set cpu gdt end,will jump to boot\n");
     asm("ljmp %0,$0" ::"X"(BOOT_TSS_SELECTOR));
     //跳转到内核

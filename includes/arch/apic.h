@@ -8,7 +8,11 @@
 
 #define  IA32_APIC_BASE_MSR 0x1B
 
-#define  APCI_ID_INDE 0X20
+#define  APIC_ID 0X20
+
+#define  APIC_TPR 0XF0
+
+
 
 #define  PIC_ADDRESS_1 0X21
 #define  PIC_ADDRESS_2 0Xa1

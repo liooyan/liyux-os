@@ -15,6 +15,8 @@
 ISR(0)
 
 
+
 void isr0();
+
 
 #endif //LIYUX_OS_INTERRUPT_H
