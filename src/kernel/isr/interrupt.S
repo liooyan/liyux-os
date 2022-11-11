@@ -17,7 +17,7 @@
 
 .section .text
     isr_template FAULT_DIVISION_ERROR
-
+        isr_template TIMER_DIVISION
     interrupt_wrapper:
     pushl %eax
     movl 4(%esp),%eax

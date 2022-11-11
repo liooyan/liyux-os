@@ -13,10 +13,11 @@
 
 
 ISR(0)
+ISR(60)
 
 
 
 void isr0();
-
+void isr_time();
 
 #endif //LIYUX_OS_INTERRUPT_H

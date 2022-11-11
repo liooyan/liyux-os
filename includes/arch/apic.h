@@ -17,6 +17,9 @@
 #define  PIC_ADDRESS_1 0X21
 #define  PIC_ADDRESS_2 0Xa1
 #define  PIC_CLOSE_VAL 0xff
+
+
+
 void _init_apic();
 
 

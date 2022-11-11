@@ -32,9 +32,14 @@ void _setup_init(multiboot_info_t *multiboot_info_parm, uint32_t heap_addr) {
 
     kprintf("set cpu gdt end,will jump to boot\n");
     asm("ljmp %0,$0" ::"X"(BOOT_TSS_SELECTOR));
+
     //跳转到内核
 }
 void _start_kernel() {
+    asm("sti");
+    while (1){
+
+    }
     kprintf("this is _start_kernel\n");
     task_t *task = creat_def_task((u32)_task);
     task_run(task);

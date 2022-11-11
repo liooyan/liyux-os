@@ -38,6 +38,7 @@ static void set_idt_dlp0_global(u32 vector, void (*isr)(),void (*function)()) {
 
 void _init_idt() {
     set_idt_dlp0_global(FAULT_DIVISION_ERROR, _asm_isr0,isr0);
+    set_idt_dlp0_global(TIMER_DIVISION, _asm_isr60,isr_time);
     idt_index_t index = {_idt_limit,_idt};
     cpu_lidt((u32 *) &index);
 
