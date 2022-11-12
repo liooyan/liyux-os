@@ -22,6 +22,7 @@ typedef struct {
     u32 stack_size;
     u8 stack_0[TASK_STACK_SIZE];
     u32 stack_0_size;
+    u32 task_start;
 } task_t;
 
 task_t *creat_def_task(u32 start_add);

@@ -17,6 +17,7 @@
 #include "arch/apic.h"
 
 int _task();
+void hlt();
 
 multiboot_info_t *multiboot_info;
 void _setup_init(multiboot_info_t *multiboot_info_parm, uint32_t heap_addr) {
@@ -37,12 +38,13 @@ void _setup_init(multiboot_info_t *multiboot_info_parm, uint32_t heap_addr) {
 }
 void _start_kernel() {
     asm("sti");
-    while (1){
-
-    }
     kprintf("this is _start_kernel\n");
     task_t *task = creat_def_task((u32)_task);
     task_run(task);
     kprintf("task is end\n");
+    hlt();
 }
 
+void hlt(){
+    while (1){}
+}

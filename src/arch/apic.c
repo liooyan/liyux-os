@@ -38,15 +38,15 @@ static inline void write_apic(u32 index, u32 val) {
 
 static inline void open_apic() {
     u32 tpr = read_apic(APIC_TPR);
-    tpr = tpr | (1 << 8);
-    write_apic(APIC_TPR, 508);
+    tpr = APIC_OPEN(tpr);
+    write_apic(APIC_TPR, tpr);
 }
 
 void _init_time() {
 
-    write_apic(APIC_LVT_TIME, 60);
+    write_apic(APIC_LVT_TIME, 0x2003c);
     write_apic(APIC_TIME_DIV, 1024);
-    write_apic(APIC_TIMER_ICR, 0x100000);
+    write_apic(APIC_TIMER_ICR, 0x10000000);
 
 }
 
@@ -59,12 +59,15 @@ void _init_apic() {
 
     u64 apic_msr;
     cpu_rdmsr(IA32_APIC_BASE_MSR, &apic_msr);
-    apic_msr.u64_low = apic_msr.u64_low | (1 << 11);
+    apic_msr.u64_low = IA32_APIC_OPEN(apic_msr.u64_low);
     cpu_wrmsr(IA32_APIC_BASE_MSR, &apic_msr);
-
     set_apic_base_address(&apic_msr);
     open_apic();
     _init_time();
 
+}
+
+void apic_send_end() {
+    write_apic(APIC_EOI,0);
 }
 

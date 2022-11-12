@@ -1,6 +1,6 @@
 .section .text
-    .global _lcall
-    _lcall:
+    .global _task_lcall
+    _task_lcall:
         mov 4(%esp),%eax
         mov %esp,%ebx
         pushl %eax
