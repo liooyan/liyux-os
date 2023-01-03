@@ -42,6 +42,7 @@ void _start_kernel() {
     task_t *task = creat_def_task((u32)_task);
     task_run(task);
     kprintf("task is end\n");
+    kprintf("task is end\n");
     hlt();
 }
 
